@@ -2,7 +2,7 @@ package com.hubspot.singularity;
 
 import java.util.List;
 
-public class SingularityScheduledTasksInfo {
+public class SingularityScheduledTasksInfo extends SingularityJsonObject {
 
   private final int numLateTasks;
   private final int numFutureTasks;

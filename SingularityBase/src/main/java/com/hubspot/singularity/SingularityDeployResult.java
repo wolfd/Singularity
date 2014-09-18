@@ -59,9 +59,4 @@ public class SingularityDeployResult extends SingularityJsonObject {
     return timestamp;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeployResult [deployState=" + deployState + ", lbUpdate=" + lbUpdate + ", message=" + message + ", timestamp=" + timestamp + "]";
-  }
-
 }

@@ -62,10 +62,4 @@ public class SingularityKilledTaskIdRecord extends SingularityJsonObject {
     return retries;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityKilledTaskIdRecord [taskId=" + taskId + ", originalTimestamp=" + originalTimestamp + ", timestamp=" + timestamp + ", requestCleanupType=" + requestCleanupType + ", taskCleanupType=" + taskCleanupType + ", retries="
-        + retries + "]";
-  }
-
 }

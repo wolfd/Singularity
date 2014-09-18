@@ -78,9 +78,4 @@ public class SingularityPendingTask extends SingularityJsonObject {
     return maybeCmdLineArgs;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityPendingTask [taskId=" + taskId + ", maybeCmdLineArgs=" + maybeCmdLineArgs + "]";
-  }
-
 }

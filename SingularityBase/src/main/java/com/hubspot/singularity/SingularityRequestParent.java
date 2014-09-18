@@ -63,10 +63,4 @@ public class SingularityRequestParent extends SingularityJsonObject {
     return pendingDeployState;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityRequestParent [request=" + request + ", state=" + state + ", requestDeployState=" + requestDeployState + ", activeDeploy=" + activeDeploy + ", pendingDeploy=" + pendingDeploy + ", pendingDeployState="
-        + pendingDeployState + "]";
-  }
-
 }

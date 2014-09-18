@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 import com.hubspot.deploy.ExecutorData;
 import com.hubspot.mesos.Resources;
 
-public class SingularityDeployBuilder {
+public class SingularityDeployBuilder extends SingularityJsonObject {
 
   private final String requestId;
 
@@ -263,31 +263,4 @@ public class SingularityDeployBuilder {
     return this;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeployBuilder [" +
-        "requestId='" + requestId + '\'' +
-        ", id='" + id + '\'' +
-        ", version=" + version +
-        ", timestamp=" + timestamp +
-        ", metadata=" + metadata +
-        ", customExecutorCmd=" + customExecutorCmd +
-        ", customExecutorId=" + customExecutorId +
-        ", customExecutorSource=" + customExecutorSource +
-        ", resources=" + resources +
-        ", command=" + command +
-        ", env=" + env +
-        ", uris=" + uris +
-        ", executorData=" + executorData +
-        ", healthcheckUri=" + healthcheckUri +
-        ", healthcheckIntervalSeconds=" + healthcheckIntervalSeconds +
-        ", healthcheckTimeoutSeconds=" + healthcheckTimeoutSeconds +
-        ", skipHealthchecksOnDeploy=" + skipHealthchecksOnDeploy +
-        ", deployHealthTimeoutSeconds=" + deployHealthTimeoutSeconds +
-        ", considerHealthyAfterRunningForSeconds=" + considerHealthyAfterRunningForSeconds +
-        ", serviceBasePath=" + serviceBasePath +
-        ", loadBalancerGroups=" + loadBalancerGroups +
-        ", loadBalancerOptions=" + loadBalancerOptions +
-        ']';
-  }
 }

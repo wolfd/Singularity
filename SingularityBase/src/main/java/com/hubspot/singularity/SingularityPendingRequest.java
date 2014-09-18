@@ -89,9 +89,4 @@ public class SingularityPendingRequest extends SingularityJsonObject {
     return false;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityPendingRequest [requestId=" + requestId + ", deployId=" + deployId + ", timestamp=" + timestamp + ", user=" + user + ", pendingType=" + pendingType + ", cmdLineArgs=" + cmdLineArgs + "]";
-  }
-
 }

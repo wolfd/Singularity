@@ -178,27 +178,4 @@ public class SingularityS3FormatHelper {
     return getS3KeyPrefixes(keyFormat, DISALLOWED_FOR_TASK, start, end);
   }
 
-  public static void main(String[] args) {
-    SingularityTaskId taskId = new SingularityTaskId("rid", "did", System.currentTimeMillis(), 1, "host", "rackid");
-    Optional<String> tag = Optional.<String> absent();
-    Calendar c = Calendar.getInstance();
-
-    c.add(Calendar.DAY_OF_YEAR, -1);
-
-    final long now = System.currentTimeMillis();
-
-    System.out.println(getS3KeyPrefixes("%requestId/%Y/%m/%taskId_%index-%s%fileext", taskId, tag, c.getTimeInMillis(), System.currentTimeMillis()));
-    System.out.println(getS3KeyPrefixes("%Y/%m/%d", taskId, tag, c.getTimeInMillis(), System.currentTimeMillis()));
-
-    System.out.println(getS3KeyPrefixes("%requestId/%Y/%m/%taskId_%index-%s%fileext", "requestId", "deployId", tag, c.getTimeInMillis(), System.currentTimeMillis()));
-
-
-    System.out.println(getS3KeyPrefixes("%requestId/%Y/%m/%taskId_%index-%s%fileext", "rid", c.getTimeInMillis(), System.currentTimeMillis()));
-
-
-
-    System.out.println(System.currentTimeMillis() - now);
-
-  }
-
 }

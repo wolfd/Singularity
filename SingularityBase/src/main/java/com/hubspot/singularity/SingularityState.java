@@ -205,14 +205,4 @@ public class SingularityState extends SingularityJsonObject {
     return underProvisionedRequests;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityState [activeTasks=" + activeTasks + ", pausedRequests=" + pausedRequests + ", activeRequests=" + activeRequests + ", cooldownRequests=" + cooldownRequests + ", scheduledTasks=" + scheduledTasks + ", lateTasks="
-        + lateTasks + ", futureTasks=" + futureTasks + ", cleaningTasks=" + cleaningTasks + ", lbCleanupTasks=" + lbCleanupTasks + ", maxTaskLag=" + maxTaskLag + ", pendingRequests=" + pendingRequests + ", cleaningRequests="
-        + cleaningRequests + ", finishedRequests=" + finishedRequests + ", activeSlaves=" + activeSlaves + ", deadSlaves=" + deadSlaves + ", decomissioningSlaves=" + decomissioningSlaves + ", activeRacks=" + activeRacks + ", deadRacks="
-        + deadRacks + ", decomissioningRacks=" + decomissioningRacks + ", oldestDeploy=" + oldestDeploy + ", numDeploys=" + numDeploys + ", generatedAt=" + generatedAt + ", hostStates=" + hostStates + ", overProvisionedRequestIds="
-        + overProvisionedRequestIds + ", underProvisionedRequestIds=" + underProvisionedRequestIds + ", overProvisionedRequests=" + overProvisionedRequests + ", underProvisionedRequests=" + underProvisionedRequests + "]";
-  }
-
-
 }

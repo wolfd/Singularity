@@ -72,9 +72,4 @@ public class SingularityTaskRequest extends SingularityJsonObject implements Com
     return this.getPendingTask().getPendingTaskId().compareTo(o.getPendingTask().getPendingTaskId());
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskRequest [request=" + request + ", deploy=" + deploy + ", pendingTask=" + pendingTask + "]";
-  }
-
 }

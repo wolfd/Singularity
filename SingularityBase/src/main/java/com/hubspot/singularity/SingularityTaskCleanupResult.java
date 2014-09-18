@@ -22,8 +22,4 @@ public class SingularityTaskCleanupResult extends SingularityJsonObject {
     return task;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskCleanupResult [result=" + result + ", taskId=" + task.getTaskId() + "]";
-  }
 }

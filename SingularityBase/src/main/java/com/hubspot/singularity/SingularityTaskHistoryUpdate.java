@@ -110,9 +110,4 @@ public class SingularityTaskHistoryUpdate extends SingularityTaskIdHolder implem
     return statusMessage;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskHistoryUpdate [timestamp=" + timestamp + ", taskState=" + taskState + ", statusMessage=" + statusMessage + "]";
-  }
-
 }

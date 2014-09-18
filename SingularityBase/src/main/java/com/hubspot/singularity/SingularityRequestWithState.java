@@ -45,9 +45,4 @@ public class SingularityRequestWithState extends SingularityJsonObject {
     return request;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityRequestWithState [request=" + request + ", state=" + state + "]";
-  }
-
 }

@@ -9,7 +9,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Iterables;
 
-public class SingularityTaskIdHistory implements Comparable<SingularityTaskIdHistory> {
+public class SingularityTaskIdHistory extends SingularityJsonObject implements Comparable<SingularityTaskIdHistory> {
 
   private final SingularityTaskId taskId;
   private final long updatedAt;
@@ -75,9 +75,5 @@ public class SingularityTaskIdHistory implements Comparable<SingularityTaskIdHis
     return updatedAt;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskIdHistory [taskId=" + taskId + ", updatedAt=" + updatedAt + ", lastTaskState=" + lastTaskState + "]";
-  }
 
 }

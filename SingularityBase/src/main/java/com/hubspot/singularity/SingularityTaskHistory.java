@@ -54,9 +54,4 @@ public class SingularityTaskHistory extends SingularityJsonObject {
     return loadBalancerUpdates;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskHistory [taskUpdates=" + taskUpdates + ", directory=" + directory + ", task=" + task + ", healthcheckResults=" + healthcheckResults + ", loadBalancerUpdates=" + loadBalancerUpdates + "]";
-  }
-
 }

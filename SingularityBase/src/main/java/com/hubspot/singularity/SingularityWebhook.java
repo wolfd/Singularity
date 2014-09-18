@@ -55,8 +55,4 @@ public class SingularityWebhook extends SingularityJsonObject {
     return type;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityWebhook [uri=" + uri + ", timestamp=" + timestamp + ", id=" + id + ", user=" + user + ", type=" + type + "]";
-  }
 }

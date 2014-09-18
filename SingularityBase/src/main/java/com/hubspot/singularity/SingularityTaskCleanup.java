@@ -66,9 +66,4 @@ public class SingularityTaskCleanup extends SingularityJsonObject {
     return taskId;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskCleanup [user=" + user + ", cleanupType=" + cleanupType + ", timestamp=" + timestamp + ", taskId=" + taskId + "]";
-  }
-
 }

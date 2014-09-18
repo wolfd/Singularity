@@ -201,31 +201,4 @@ public class SingularityDeploy extends SingularityJsonObject {
     return skipHealthchecksOnDeploy;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeploy [" +
-        "requestId='" + requestId + '\'' +
-        ", id='" + id + '\'' +
-        ", version=" + version +
-        ", timestamp=" + timestamp +
-        ", metadata=" + metadata +
-        ", customExecutorCmd=" + customExecutorCmd +
-        ", customExecutorId=" + customExecutorId +
-        ", customExecutorSource=" + customExecutorSource +
-        ", resources=" + resources +
-        ", command=" + command +
-        ", env=" + env +
-        ", uris=" + uris +
-        ", executorData=" + executorData +
-        ", healthcheckUri=" + healthcheckUri +
-        ", healthcheckIntervalSeconds=" + healthcheckIntervalSeconds +
-        ", healthcheckTimeoutSeconds=" + healthcheckTimeoutSeconds +
-        ", skipHealthchecksOnDeploy=" + skipHealthchecksOnDeploy +
-        ", deployHealthTimeoutSeconds=" + deployHealthTimeoutSeconds +
-        ", considerHealthyAfterRunningForSeconds=" + considerHealthyAfterRunningForSeconds +
-        ", serviceBasePath=" + serviceBasePath +
-        ", loadBalancerGroups=" + loadBalancerGroups +
-        ", loadBalancerOptions=" + loadBalancerOptions +
-        ']';
-  }
 }

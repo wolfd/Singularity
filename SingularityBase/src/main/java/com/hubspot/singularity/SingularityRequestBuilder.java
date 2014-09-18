@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 
-public class SingularityRequestBuilder {
+public class SingularityRequestBuilder extends SingularityJsonObject {
 
   private final String id;
 
@@ -146,13 +146,6 @@ public class SingularityRequestBuilder {
   public SingularityRequestBuilder setRackAffinity(Optional<List<String>> rackAffinity) {
     this.rackAffinity = rackAffinity;
     return this;
-  }
-
-  @Override
-  public String toString() {
-    return "SingularityRequestBuilder [id=" + id + ", owners=" + owners + ", numRetriesOnFailure=" + numRetriesOnFailure + ", schedule=" + schedule + ", quartzSchedule=" + quartzSchedule + ", scheduleType=" + scheduleType
-        + ", killOldNonLongRunningTasksAfterMillis=" + killOldNonLongRunningTasksAfterMillis + ", daemon=" + daemon + ", instances=" + instances + ", rackSensitive=" + rackSensitive + ", rackAffinity=" + rackAffinity + ", loadBalanced="
-        + loadBalanced + "]";
   }
 
 }

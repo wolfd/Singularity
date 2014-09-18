@@ -33,9 +33,4 @@ public class SingularityTaskWebhook extends SingularityJsonObject {
     return taskUpdate;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskWebhook [task=" + task + ", taskUpdate=" + taskUpdate + "]";
-  }
-
 }

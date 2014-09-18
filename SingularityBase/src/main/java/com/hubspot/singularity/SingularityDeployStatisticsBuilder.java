@@ -93,10 +93,4 @@ public class SingularityDeployStatisticsBuilder extends SingularityJsonObject {
     return deployId;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeployStatisticsBuilder [requestId=" + requestId + ", deployId=" + deployId + ", numSuccess=" + numSuccess + ", numFailures=" + numFailures + ", numSequentialRetries=" + numSequentialRetries
-        + ", sequentialFailureTimestamps=" + sequentialFailureTimestamps + ", lastFinishAt=" + lastFinishAt + ", lastTaskState=" + lastTaskState + "]";
-  }
-
 }

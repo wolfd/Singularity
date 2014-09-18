@@ -41,9 +41,4 @@ public class SingularityPendingDeploy extends SingularityJsonObject {
     return currentDeployState;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityPendingDeploy [deployMarker=" + deployMarker + ", lastLoadBalancerUpdate=" + lastLoadBalancerUpdate + ", currentDeployState=" + currentDeployState + "]";
-  }
-
 }

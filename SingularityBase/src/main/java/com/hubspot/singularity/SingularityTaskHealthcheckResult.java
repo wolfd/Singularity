@@ -95,9 +95,4 @@ public class SingularityTaskHealthcheckResult extends SingularityTaskIdHolder im
     return getErrorMessage().isPresent() || (getStatusCode().isPresent() && !JavaUtils.isHttpSuccess(getStatusCode().get()));
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTaskHealthcheckResult [statusCode=" + statusCode + ", durationMillis=" + durationMillis + ", timestamp=" + timestamp + ", responseBody=" + responseBody + ", errorMessage=" + errorMessage + ", taskId=" + getTaskId() + "]";
-  }
-
 }

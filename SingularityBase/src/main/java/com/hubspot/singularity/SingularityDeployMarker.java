@@ -92,9 +92,4 @@ public class SingularityDeployMarker extends SingularityJsonObject implements Co
     return user;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeployMarker [requestId=" + requestId + ", deployId=" + deployId + ", timestamp=" + timestamp + ", user=" + user + "]";
-  }
-
 }

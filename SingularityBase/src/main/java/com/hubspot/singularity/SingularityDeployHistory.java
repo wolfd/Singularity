@@ -74,9 +74,4 @@ public class SingularityDeployHistory extends SingularityJsonObject implements C
     return deployStatistics;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeployHistory [deployResult=" + deployResult + ", deployMarker=" + deployMarker + ", deploy=" + deploy + ", deployStatistics=" + deployStatistics + "]";
-  }
-
 }

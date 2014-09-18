@@ -50,9 +50,4 @@ public class SingularityDeployWebhook extends SingularityJsonObject {
     return deployResult;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeployWebhook [deployMarker=" + deployMarker + ", deploy=" + deploy + ", eventType=" + eventType + ", deployResult=" + deployResult + "]";
-  }
-
 }

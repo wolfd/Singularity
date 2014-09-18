@@ -37,11 +37,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.hubspot.jackson</groupId>
-      <artifactId>jackson-datatype-protobuf</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>com.hubspot</groupId>
       <artifactId>BaragonCore</artifactId>
     </dependency>

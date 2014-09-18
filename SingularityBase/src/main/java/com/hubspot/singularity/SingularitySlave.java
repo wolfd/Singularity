@@ -43,10 +43,4 @@ public class SingularitySlave extends SingularityMachineAbstraction {
     return rackId;
   }
 
-  @Override
-  public String toString() {
-    return "SingularitySlave [host=" + host + ", rackId=" + rackId + ", getDecomissioningBy()=" + getDecomissioningBy() + ", getDecomissioningAt()=" + getDecomissioningAt() + ", getId()=" + getId() + ", getDeadAt()=" + getDeadAt()
-        + ", getDecomissionedAt()=" + getDecomissionedAt() + ", getFirstSeenAt()=" + getFirstSeenAt() + ", getState()=" + getState() + "]";
-  }
-
 }

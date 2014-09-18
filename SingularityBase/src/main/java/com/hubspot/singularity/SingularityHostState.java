@@ -68,10 +68,4 @@ public class SingularityHostState extends SingularityJsonObject {
     return mesosMaster;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityHostState [master=" + master + ", uptime=" + uptime + ", driverStatus=" + driverStatus + ", millisSinceLastOffer=" + millisSinceLastOffer + ", hostAddress=" + hostAddress + ", hostname=" + hostname + ", mesosMaster="
-        + mesosMaster + "]";
-  }
-
 }

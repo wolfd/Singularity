@@ -17,7 +17,6 @@ import com.hubspot.mesos.MesosUtils;
 public class SingularityTask extends SingularityTaskIdHolder {
 
   private final SingularityTaskRequest taskRequest;
-  private final SingularityTaskId taskId;
   private final Offer offer;
   private final TaskInfo mesosTask;
 
@@ -35,7 +34,6 @@ public class SingularityTask extends SingularityTaskIdHolder {
     this.taskRequest = taskRequest;
     this.offer = offer;
     this.mesosTask = task;
-    this.taskId = taskId;
   }
 
   public SingularityTaskRequest getTaskRequest() {
@@ -63,9 +61,5 @@ public class SingularityTask extends SingularityTaskIdHolder {
     return Optional.absent();
   }
 
-  @Override
-  public String toString() {
-    return "SingularityTask [taskRequest=" + taskRequest + ", taskId=" + taskId + ", offer=" + offer + ", task=" + mesosTask + "]";
-  }
 
 }

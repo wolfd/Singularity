@@ -28,10 +28,4 @@ public class SingularityRack extends SingularityMachineAbstraction {
     super(rackId, state, firstSeenAt, decomissioningBy, decomissioningAt, decomissionedAt, deadAt);
   }
 
-  @Override
-  public String toString() {
-    return "SingularityRack [getDecomissioningBy()=" + getDecomissioningBy() + ", getDecomissioningAt()=" + getDecomissioningAt() + ", getId()=" + getId() + ", getDeadAt()=" + getDeadAt() + ", getDecomissionedAt()=" + getDecomissionedAt()
-        + ", getFirstSeenAt()=" + getFirstSeenAt() + ", getState()=" + getState() + "]";
-  }
-
 }

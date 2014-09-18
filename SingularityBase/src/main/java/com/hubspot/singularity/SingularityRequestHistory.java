@@ -87,9 +87,4 @@ public class SingularityRequestHistory extends SingularityJsonObject implements 
     return request;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityRequestHistory [createdAt=" + createdAt + ", user=" + user + ", eventType=" + eventType + ", request=" + request + "]";
-  }
-
 }

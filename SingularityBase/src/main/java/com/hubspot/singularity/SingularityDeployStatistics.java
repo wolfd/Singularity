@@ -88,10 +88,4 @@ public class SingularityDeployStatistics extends SingularityJsonObject {
     return sequentialFailureTimestamps;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityDeployStatistics [requestId=" + requestId + ", deployId=" + deployId + ", numSuccess=" + numSuccess + ", numFailures=" + numFailures + ", numSequentialRetries=" + numSequentialRetries +
-        "sequentialFailureTimestamps=" + sequentialFailureTimestamps + ", lastFinishAt=" + lastFinishAt + ", lastTaskState=" + lastTaskState + "]";
-  }
-
 }

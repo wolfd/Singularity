@@ -179,11 +179,4 @@ public class SingularityRequest extends SingularityJsonObject {
     return scheduleType.or(ScheduleType.CRON);
   }
 
-  @Override
-  public String toString() {
-    return "SingularityRequest [id=" + id + ", owners=" + owners + ", numRetriesOnFailure=" + numRetriesOnFailure + ", schedule=" + schedule + ", quartzSchedule=" + quartzSchedule + ", scheduleType=" + scheduleType
-        + ", killOldNonLongRunningTasksAfterMillis=" + killOldNonLongRunningTasksAfterMillis + ", daemon=" + daemon + ", instances=" + instances + ", rackSensitive=" + rackSensitive + ", rackAffinity=" + rackAffinity + ", loadBalanced="
-        + loadBalanced + "]";
-  }
-
 }

@@ -57,9 +57,4 @@ public class SingularityRequestCleanup extends SingularityJsonObject {
     return timestamp;
   }
 
-  @Override
-  public String toString() {
-    return "SingularityRequestCleanup [user=" + user + ", cleanupType=" + cleanupType + ", killTasks=" + killTasks + ", timestamp=" + timestamp + ", requestId=" + requestId + "]";
-  }
-
 }

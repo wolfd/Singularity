@@ -3,7 +3,7 @@ package com.hubspot.singularity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SingularityS3Log {
+public class SingularityS3Log extends SingularityJsonObject {
 
   private final String getUrl;
   private final String key;
@@ -32,11 +32,6 @@ public class SingularityS3Log {
 
   public long getSize() {
     return size;
-  }
-
-  @Override
-  public String toString() {
-    return "SingularityS3Log [getUrl=" + getUrl + ", key=" + key + ", lastModified=" + lastModified + ", size=" + size + "]";
   }
 
 }
