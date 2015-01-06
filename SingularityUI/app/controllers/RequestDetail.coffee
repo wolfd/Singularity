@@ -67,6 +67,8 @@ class RequestDetailController extends Controller
         @subviews.scheduledTasks = new SimpleSubview
             collection: @collections.scheduledTasks
             template:   @templates.scheduledTasks
+            extraRenderData: (subView) =>
+                { request: @models.request.toJSON() }
 
         @subviews.taskHistory = new ExpandableTableSubview
             collection: @collections.taskHistory
@@ -110,7 +112,7 @@ class RequestDetailController extends Controller
 
         @collections.activeTasks.fetch().error    @ignore404
         @collections.scheduledTasks.fetch().error @ignore404
-        
+
         if @collections.requestHistory.currentPage is 1
             @collections.requestHistory.fetch().error @ignore404
         if @collections.taskHistory.currentPage is 1
