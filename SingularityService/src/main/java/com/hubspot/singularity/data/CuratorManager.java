@@ -89,15 +89,15 @@ public abstract class CuratorManager {
   protected int getNumChildren(String path) {
     try {
       Stat s = curator.checkExists().forPath(path);
-      if (s != null) {
-        return s.getNumChildren();
-      }
+      return (s != null) ? s.getNumChildren() : 0;
     } catch (NoNodeException nne) {
+      return 0;
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      return 0;
     } catch (Throwable t) {
       throw Throwables.propagate(t);
     }
-
-    return 0;
   }
 
   protected Optional<Stat> checkExists(String path) {
@@ -128,6 +128,9 @@ public abstract class CuratorManager {
       return children;
     } catch (NoNodeException nne) {
       return Collections.emptyList();
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      return Collections.emptyList();
     } catch (Throwable t) {
       throw Throwables.propagate(t);
     } finally {
@@ -144,6 +147,9 @@ public abstract class CuratorManager {
     } catch (NoNodeException nne) {
       LOG.trace("Tried to delete an item at path {} that didn't exist", path);
       return SingularityDeleteResult.DIDNT_EXIST;
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      return SingularityDeleteResult.UNKNOWN;
     } catch (Throwable t) {
       throw Throwables.propagate(t);
     } finally {
@@ -166,6 +172,9 @@ public abstract class CuratorManager {
       return SingularityCreateResult.CREATED;
     } catch (NodeExistsException nee) {
       return SingularityCreateResult.EXISTED;
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      return SingularityCreateResult.UNKNOWN;
     } catch (Throwable t) {
       throw Throwables.propagate(t);
     }
@@ -199,6 +208,9 @@ public abstract class CuratorManager {
       return SingularityCreateResult.CREATED;
     } catch (NodeExistsException nee) {
       return set(path, data);
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      return SingularityCreateResult.UNKNOWN;
     } catch (Throwable t) {
       throw Throwables.propagate(t);
     }
@@ -228,6 +240,9 @@ public abstract class CuratorManager {
       return SingularityCreateResult.EXISTED;
     } catch (NoNodeException nne) {
       return save(path, data);
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      return SingularityCreateResult.UNKNOWN;
     } catch (Throwable t) {
       throw Throwables.propagate(t);
     }
@@ -268,6 +283,9 @@ public abstract class CuratorManager {
 
       return Optional.of(object);
     } catch (NoNodeException nne) {
+      return Optional.absent();
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
       return Optional.absent();
     } catch (Throwable t) {
       throw Throwables.propagate(t);
