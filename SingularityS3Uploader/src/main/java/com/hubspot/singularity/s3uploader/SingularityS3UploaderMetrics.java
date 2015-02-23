@@ -20,6 +20,7 @@ public class SingularityS3UploaderMetrics {
   private final Counter uploaderCounter;
   private final Counter uploadCounter;
   private final Counter errorCounter;
+  private final Counter zeroByteUploadCounter;
   private final Timer uploadTimer;
   private final Meter filesystemEventsMeter;
 
@@ -35,6 +36,7 @@ public class SingularityS3UploaderMetrics {
     this.uploaderCounter = registry.counter(name("uploaders", "total"));
     this.uploadCounter = registry.counter(name("uploads", "success"));
     this.errorCounter = registry.counter(name("uploads", "errors"));
+    this.zeroByteUploadCounter = registry.counter(name("uploads", "zero byte"));
     this.uploadTimer = registry.timer(name("uploads", "timer"));
 
     this.expiring = Optional.absent();
@@ -95,6 +97,10 @@ public class SingularityS3UploaderMetrics {
 
   public void error() {
     errorCounter.inc();
+  }
+
+  public void zeroByte() {
+    zeroByteUploadCounter.inc();
   }
 
   private void startJmxReporter() {
