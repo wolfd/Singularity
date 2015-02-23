@@ -80,18 +80,15 @@ class SingularityMesosTaskBuilder {
       prepareContainerInfo(taskId, bldr, containerInfo.get(), ports);
     }
 
+    final List<Resource> resources = prepareResourceList(desiredTaskResources, portsResource);
+
     if (taskRequest.getDeploy().getCustomExecutorCmd().isPresent()) {
-      prepareCustomExecutor(bldr, taskId, taskRequest, ports);
+      prepareCustomExecutor(bldr, taskId, taskRequest, ports, resources);
     } else {
       prepareCommand(bldr, taskId, taskRequest, ports);
     }
 
-    if (portsResource.isPresent()) {
-      bldr.addResources(portsResource.get());
-    }
-
-    bldr.addResources(MesosUtils.getCpuResource(desiredTaskResources.getCpus()));
-    bldr.addResources(MesosUtils.getMemoryResource(desiredTaskResources.getMemoryMb()));
+    bldr.addAllResources(resources);
 
     bldr.setSlaveId(offer.getSlaveId());
 
@@ -100,6 +97,19 @@ class SingularityMesosTaskBuilder {
     TaskInfo task = bldr.build();
 
     return new SingularityTask(taskRequest, taskId, offer, task);
+  }
+
+  private List<Resource> prepareResourceList(final Resources desiredResources, final Optional<Resource> maybePorts) {
+    ImmutableList.Builder<Resource> builder = ImmutableList.builder();
+
+    builder.add(MesosUtils.getCpuResource(desiredResources.getCpus()));
+    builder.add(MesosUtils.getMemoryResource(desiredResources.getMemoryMb()));
+
+    if (maybePorts.isPresent()) {
+      builder.add(maybePorts.get());
+    }
+
+    return builder.build();
   }
 
   private void setEnv(Environment.Builder envBldr, String key, Object value) {
@@ -209,17 +219,17 @@ class SingularityMesosTaskBuilder {
     bldr.setContainer(containerBuilder);
   }
 
-  private void prepareCustomExecutor(final TaskInfo.Builder bldr, final SingularityTaskId taskId, final SingularityTaskRequest task, final Optional<long[]> ports) {
+  private void prepareCustomExecutor(final TaskInfo.Builder bldr, final SingularityTaskId taskId, final SingularityTaskRequest task, final Optional<long[]> ports, final List<Resource> resources) {
     CommandInfo.Builder commandBuilder = CommandInfo.newBuilder().setValue(task.getDeploy().getCustomExecutorCmd().get());
 
     prepareEnvironment(task, taskId, commandBuilder, ports);
 
-    bldr.setExecutor(
-        ExecutorInfo.newBuilder()
-        .setCommand(commandBuilder.build())
-        .setExecutorId(ExecutorID.newBuilder().setValue(task.getDeploy().getCustomExecutorId().or(idGenerator.getNextExecutorId())))
-        .setSource(task.getDeploy().getCustomExecutorSource().or(task.getPendingTask().getPendingTaskId().getId()))
-        );
+    bldr.setExecutor(ExecutorInfo.newBuilder()
+      .setCommand(commandBuilder.build())
+      .setExecutorId(ExecutorID.newBuilder().setValue(task.getDeploy().getCustomExecutorId().or(idGenerator.getNextExecutorId())))
+      .setSource(task.getDeploy().getCustomExecutorSource().or(task.getPendingTask().getPendingTaskId().getId()))
+      .addAllResources(resources)
+    );
 
     if (task.getDeploy().getExecutorData().isPresent()) {
       ExecutorData executorData = task.getDeploy().getExecutorData().get();
