@@ -1,12 +1,18 @@
 package com.hubspot.singularity.s3uploader.config;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.hubspot.singularity.runner.base.configuration.BaseRunnerConfiguration;
 import com.hubspot.singularity.runner.base.configuration.Configuration;
+import com.hubspot.singularity.s3.base.config.SingularityS3Credentials;
 
 @Configuration("/etc/singularity.s3uploader.yaml")
 public class SingularityS3UploaderConfiguration extends BaseRunnerConfiguration {
@@ -28,6 +34,14 @@ public class SingularityS3UploaderConfiguration extends BaseRunnerConfiguration 
 
   @Min(1)
   private long stopCheckingAfterMillisWithoutNewFile = 168;
+
+  @NotNull
+  @JsonProperty
+  private Optional<SingularityS3Credentials> defaultCredentials = Optional.absent();
+
+  @NotNull
+  @JsonProperty
+  private Map<String, SingularityS3Credentials> bucketCredentials = Collections.emptyMap();
 
   public SingularityS3UploaderConfiguration() {
     super(Optional.of("singularity-s3uploader.log"));
@@ -65,6 +79,27 @@ public class SingularityS3UploaderConfiguration extends BaseRunnerConfiguration 
     this.stopCheckingAfterMillisWithoutNewFile = stopCheckingAfterMillisWithoutNewFile;
   }
 
+  public Optional<SingularityS3Credentials> getDefaultCredentials() {
+    return defaultCredentials;
+  }
+
+  public void setDefaultCredentials(Optional<SingularityS3Credentials> defaultCredentials) {
+    this.defaultCredentials = defaultCredentials;
+  }
+
+  public Map<String, SingularityS3Credentials> getBucketCredentials() {
+    return bucketCredentials;
+  }
+
+  public void setBucketCredentials(Map<String, SingularityS3Credentials> bucketCredentials) {
+    this.bucketCredentials = bucketCredentials;
+  }
+
+  @JsonIgnore
+  public Optional<SingularityS3Credentials> getCredentialsForBucket(String bucketName) {
+    return Optional.fromNullable(bucketCredentials.get(bucketName)).or(defaultCredentials);
+  }
+
   @Override
   public String toString() {
     return "SingularityS3UploaderConfiguration[" +
@@ -72,6 +107,8 @@ public class SingularityS3UploaderConfiguration extends BaseRunnerConfiguration 
             ", executorMaxUploadThreads=" + executorMaxUploadThreads +
             ", checkUploadsEverySeconds=" + checkUploadsEverySeconds +
             ", stopCheckingAfterMillisWithoutNewFile=" + stopCheckingAfterMillisWithoutNewFile +
+            ", defaultCredentials=" + defaultCredentials +
+            ", bucketCredentials=" + bucketCredentials +
             ']';
   }
 
