@@ -2,6 +2,7 @@ package com.hubspot.singularity.s3.base.config;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hubspot.singularity.runner.base.jackson.Obfuscate;
 
 import static com.hubspot.singularity.runner.base.jackson.ObfuscateAnnotationIntrospector.ObfuscateSerializer.obfuscateValue;
 
@@ -15,10 +16,12 @@ public class SingularityS3Credentials {
     this.secretKey = secretKey;
   }
 
+  @Obfuscate
   public String getAccessKey() {
     return accessKey;
   }
 
+  @Obfuscate
   public String getSecretKey() {
     return secretKey;
   }
