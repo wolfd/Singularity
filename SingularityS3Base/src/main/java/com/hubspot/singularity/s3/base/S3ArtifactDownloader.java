@@ -31,6 +31,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.hubspot.deploy.S3Artifact;
 import com.hubspot.mesos.JavaUtils;
 import com.hubspot.singularity.s3.base.config.SingularityS3Configuration;
+import com.hubspot.singularity.s3.base.config.SingularityS3Credentials;
 
 public class S3ArtifactDownloader {
 
@@ -88,7 +89,8 @@ public class S3ArtifactDownloader {
   private void downloadThrows(final S3Artifact s3Artifact, final Path downloadTo) throws Exception {
     log.info("Downloading {}", s3Artifact);
 
-    final S3Service s3 = new RestS3Service(new AWSCredentials(configuration.getS3AccessKey(), configuration.getS3SecretKey()));
+    final SingularityS3Credentials credentials = configuration.getCredentialsForBucket(s3Artifact.getS3Bucket());
+    final S3Service s3 = new RestS3Service(new AWSCredentials(credentials.getAccessKey(), credentials.getSecretKey()));
 
     long length = 0;
 

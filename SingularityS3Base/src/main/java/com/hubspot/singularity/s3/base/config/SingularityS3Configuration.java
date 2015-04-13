@@ -1,21 +1,21 @@
 package com.hubspot.singularity.s3.base.config;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
+import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.hubspot.singularity.runner.base.configuration.BaseRunnerConfiguration;
 import com.hubspot.singularity.runner.base.configuration.Configuration;
 import com.hubspot.singularity.runner.base.constraints.DirectoryExists;
-import com.hubspot.singularity.runner.base.jackson.Obfuscate;
-
-import static com.hubspot.singularity.runner.base.jackson.ObfuscateAnnotationIntrospector.ObfuscateSerializer.obfuscateValue;
 
 @Configuration("/etc/singularity.s3base.yaml")
 public class SingularityS3Configuration extends BaseRunnerConfiguration {
@@ -36,14 +36,12 @@ public class SingularityS3Configuration extends BaseRunnerConfiguration {
   private String cacheDirectory;
 
   @NotNull
-  @Obfuscate
   @JsonProperty
-  private String s3AccessKey = "";
+  private SingularityS3Credentials defaultCredentials;
 
   @NotNull
-  @Obfuscate
   @JsonProperty
-  private String s3SecretKey = "";
+  private Map<String, SingularityS3Credentials> bucketCredentials = Collections.emptyMap();
 
   @Min(1)
   @JsonProperty
@@ -73,20 +71,20 @@ public class SingularityS3Configuration extends BaseRunnerConfiguration {
     this.cacheDirectory = cacheDirectory;
   }
 
-  public String getS3AccessKey() {
-    return s3AccessKey;
+  public SingularityS3Credentials getDefaultCredentials() {
+    return defaultCredentials;
   }
 
-  public void setS3AccessKey(String s3AccessKey) {
-    this.s3AccessKey = s3AccessKey;
+  public void setDefaultCredentials(SingularityS3Credentials defaultCredentials) {
+    this.defaultCredentials = defaultCredentials;
   }
 
-  public String getS3SecretKey() {
-    return s3SecretKey;
+  public Map<String, SingularityS3Credentials> getBucketCredentials() {
+    return bucketCredentials;
   }
 
-  public void setS3SecretKey(String s3SecretKey) {
-    this.s3SecretKey = s3SecretKey;
+  public void setBucketCredentials(Map<String, SingularityS3Credentials> bucketCredentials) {
+    this.bucketCredentials = bucketCredentials;
   }
 
   public long getS3ChunkSize() {
@@ -121,12 +119,17 @@ public class SingularityS3Configuration extends BaseRunnerConfiguration {
     this.localDownloadPath = localDownloadPath;
   }
 
+  @JsonIgnore
+  public SingularityS3Credentials getCredentialsForBucket(String bucketName) {
+    return bucketCredentials.containsKey(bucketName) ? bucketCredentials.get(bucketName) : defaultCredentials;
+  }
+
   @Override
   public String toString() {
     return "SingularityS3Configuration[" +
             "cacheDirectory='" + cacheDirectory + '\'' +
-            ", s3AccessKey='" + obfuscateValue(s3AccessKey) + '\'' +
-            ", s3SecretKey='" + obfuscateValue(s3SecretKey) + '\'' +
+            ", defaultCredentials=" + defaultCredentials +
+            ", bucketCredentials=" + bucketCredentials +
             ", s3ChunkSize=" + s3ChunkSize +
             ", s3DownloadTimeoutMillis=" + s3DownloadTimeoutMillis +
             ", localDownloadHttpPort=" + localDownloadHttpPort +
@@ -140,12 +143,8 @@ public class SingularityS3Configuration extends BaseRunnerConfiguration {
       setCacheDirectory(properties.getProperty(ARTIFACT_CACHE_DIRECTORY));
     }
 
-    if (properties.containsKey(S3_ACCESS_KEY)) {
-      setS3AccessKey(properties.getProperty(S3_ACCESS_KEY));
-    }
-
-    if (properties.containsKey(S3_SECRET_KEY)) {
-      setS3SecretKey(properties.getProperty(S3_SECRET_KEY));
+    if (properties.containsKey(S3_ACCESS_KEY) && properties.containsKey(S3_SECRET_KEY)) {
+      setDefaultCredentials(new SingularityS3Credentials(properties.getProperty(S3_ACCESS_KEY), properties.getProperty(S3_SECRET_KEY)));
     }
 
     if (properties.containsKey(S3_CHUNK_SIZE)) {

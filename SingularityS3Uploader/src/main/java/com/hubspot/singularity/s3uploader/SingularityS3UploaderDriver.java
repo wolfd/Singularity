@@ -45,6 +45,7 @@ import com.hubspot.singularity.runner.base.shared.S3UploadMetadata;
 import com.hubspot.singularity.runner.base.shared.SingularityDriver;
 import com.hubspot.singularity.runner.base.shared.WatchServiceHelper;
 import com.hubspot.singularity.s3.base.config.SingularityS3Configuration;
+import com.hubspot.singularity.s3.base.config.SingularityS3Credentials;
 import com.hubspot.singularity.s3uploader.config.SingularityS3UploaderConfiguration;
 
 public class SingularityS3UploaderDriver extends WatchServiceHelper implements SingularityDriver {
@@ -53,6 +54,7 @@ public class SingularityS3UploaderDriver extends WatchServiceHelper implements S
 
   private final SingularityRunnerBaseConfiguration baseConfiguration;
   private final SingularityS3UploaderConfiguration configuration;
+  private final SingularityS3Configuration s3Configuration;
   private final ScheduledExecutorService scheduler;
   private final Map<S3UploadMetadata, SingularityS3Uploader> metadataToUploader;
   private final Map<SingularityS3Uploader, Long> uploaderLastHadFilesAt;
@@ -63,7 +65,6 @@ public class SingularityS3UploaderDriver extends WatchServiceHelper implements S
   private final SingularityS3UploaderMetrics metrics;
   private final JsonObjectFileHelper jsonObjectFileHelper;
   private final ProcessUtils processUtils;
-  private final AWSCredentials defaultCredentials;
 
   private ScheduledFuture<?> future;
 
@@ -72,8 +73,8 @@ public class SingularityS3UploaderDriver extends WatchServiceHelper implements S
     super(configuration.getPollForShutDownMillis(), Paths.get(baseConfiguration.getS3UploaderMetadataDirectory()), ImmutableList.of(StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE));
 
     this.baseConfiguration = baseConfiguration;
+    this.s3Configuration = s3Configuration;
     this.metrics = metrics;
-    this.defaultCredentials = new AWSCredentials(s3Configuration.getS3AccessKey(), s3Configuration.getS3SecretKey());
 
     this.fileSystem = FileSystems.getDefault();
 
@@ -331,7 +332,8 @@ public class SingularityS3UploaderDriver extends WatchServiceHelper implements S
     try {
       metrics.getUploaderCounter().inc();
 
-      SingularityS3Uploader uploader = new SingularityS3Uploader(defaultCredentials, metadata, fileSystem, metrics, filename);
+      final SingularityS3Credentials credentials = s3Configuration.getCredentialsForBucket(metadata.getS3Bucket());
+      SingularityS3Uploader uploader = new SingularityS3Uploader(new AWSCredentials(credentials.getAccessKey(), credentials.getSecretKey()), metadata, fileSystem, metrics, filename);
 
       if (metadata.isFinished()) {
         expiring.add(uploader);
