@@ -42,7 +42,7 @@ public class SingularityCooldown {
     final boolean failedTooManyTimes = hasFailedTooManyTimes(request, deployStatistics, Optional.of(taskId.getInstanceNo()), Optional.of(failureTimestamp));
 
     if (failedTooManyTimes) {
-      LOG.trace("Request {} has failed at least {} times in {}", request.getId(), configuration.getCooldownAfterFailures(), configuration.getCooldownAfterFailures());
+      LOG.trace("Entering cooldown -- At least {}% of instances in request {} have failed at least {} times in {} minutes.", request.getId(), configuration.getCooldownAfterPctOfInstancesFail() * 100.0, configuration.getCooldownAfterFailures(), configuration.getCooldownExpiresAfterMinutes());
     }
 
     return failedTooManyTimes;
