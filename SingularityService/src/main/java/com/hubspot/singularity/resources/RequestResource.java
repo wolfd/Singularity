@@ -1,11 +1,12 @@
 package com.hubspot.singularity.resources;
 
-import java.util.Collections;
 import static com.hubspot.singularity.WebExceptions.badRequest;
 import static com.hubspot.singularity.WebExceptions.checkBadRequest;
 import static com.hubspot.singularity.WebExceptions.checkConflict;
 import static com.hubspot.singularity.WebExceptions.checkNotNullBadRequest;
+import static com.hubspot.singularity.WebExceptions.notModified;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -192,7 +193,7 @@ public class RequestResource extends AbstractRequestResource {
     checkConflict(requestWithState.getState() != RequestState.PAUSED, "Request %s is paused. Unable to bounce (it must be manually unpaused first)", requestWithState.getRequest().getId());
 
     SingularityCreateResult createResult = requestManager.createCleanupRequest(
-        new SingularityRequestCleanup(user, RequestCleanupType.BOUNCE, System.currentTimeMillis(), Optional.<Boolean> absent(), requestId, Optional.of(getAndCheckDeployId(requestId))));
+            new SingularityRequestCleanup(user, RequestCleanupType.BOUNCE, System.currentTimeMillis(), Optional.<Boolean>absent(), requestId, Optional.of(getAndCheckDeployId(requestId))));
 
     checkConflict(createResult != SingularityCreateResult.EXISTED, "%s is already bouncing", requestId);
 
@@ -254,7 +255,7 @@ public class RequestResource extends AbstractRequestResource {
 
     final long now = System.currentTimeMillis();
 
-    SingularityCreateResult result = requestManager.createCleanupRequest(new SingularityRequestCleanup(user, RequestCleanupType.PAUSING, now, killTasks, requestId, Optional.<String> absent()));
+    SingularityCreateResult result = requestManager.createCleanupRequest(new SingularityRequestCleanup(user, RequestCleanupType.PAUSING, now, killTasks, requestId, Optional.<String>absent()));
 
     checkConflict(result == SingularityCreateResult.CREATED, "%s is already pausing - try again soon", requestId, result);
 
@@ -425,6 +426,27 @@ public class RequestResource extends AbstractRequestResource {
     checkReschedule(newRequest, maybeOldRequest, now);
 
     return newRequest;
+  }
+
+  @POST
+  @Path("/request/{requestId}/exit-cooldown")
+  @ApiOperation(value="Manually removes a Request from cooldown", response=SingularityRequest.class)
+  @ApiResponses({
+          @ApiResponse(code=200, message="The Request was removed from cooldown."),
+          @ApiResponse(code=304, message="The Request was not currently in cooldown."),
+  })
+  public SingularityCreateResult forceExitCooldown(@PathParam("requestId") String requestId) {
+    SingularityRequest request = fetchRequest(requestId);
+
+    validator.checkSingularityRequest(request, Optional.<SingularityRequest>absent(), Optional.<SingularityDeploy>absent(), Optional.<SingularityDeploy>absent());
+
+    for (SingularityRequestWithState cooldownRequest : requestManager.getCooldownRequests()) {
+      if (cooldownRequest.getRequest().getId().equals(requestId)) {
+        return requestManager.exitCooldown(request, System.currentTimeMillis());
+      }
+    }
+
+    throw notModified("Request %s is not currently in cooldown", requestId);
   }
 
 }

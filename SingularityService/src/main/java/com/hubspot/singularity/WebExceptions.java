@@ -71,6 +71,10 @@ public final class WebExceptions {
     return webException(Status.FORBIDDEN.getStatusCode(), message, args);
   }
 
+  public static WebApplicationException notModified(String message, Object... args) {
+    return webException(Status.NOT_MODIFIED.getStatusCode(), message, args);
+  }
+
   private static WebApplicationException webException(int statusCode, String message, Object... formatArgs) {
     if (formatArgs.length > 0) {
       message = format(message, formatArgs);
