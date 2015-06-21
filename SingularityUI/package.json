@@ -16,20 +16,41 @@
     "brunch": "./node_modules/brunch/bin/brunch"
   },
   "scripts": {
+    "test": "jest",
     "start": "brunch watch --server",
-    "postinstall": "bower install --allow-root && brunch build --production"
+    "postinstall": "bower install --allow-root && cp bower_components/react/react.js bower_components/react-bootstrap/react-bootstrap.js app/vendorlib/ && brunch build --production"
+  },
+  "jest": {
+    "scriptPreprocessor": "utils/preprocessor.js",
+    "testDirectoryName": "__tests__",
+    "testFileExtensions": [
+      "coffee",
+      "js",
+      "cjsx"
+    ],
+    "unmockedModulePathPatterns": [
+      "node_modules/react"
+    ]
   },
   "dependencies": {
     "bower": "^1.3.8",
     "brunch": "^1.7.14",
     "clean-css-brunch": ">= 1.0 < 1.8",
+    "coffee-react": "^3.2.0",
     "coffee-script-brunch": ">= 1.0 < 1.8",
     "css-brunch": ">= 1.0 < 1.8",
+    "gulp-jest": "^0.4.0",
     "handlebars-brunch": "^1.9.1",
     "javascript-brunch": ">= 1.0 < 1.8",
+    "jest-cli": "^0.4.13",
     "less-brunch": "^1.7.2",
+    "react": "^0.13.3",
     "react-coffee-brunch": "^1.7.2",
     "stylus-brunch": ">= 1.0 < 1.8",
     "uglify-js-brunch": ">= 1.0 < 1.8"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "harmonize": "^1.4.2"
   }
 }
