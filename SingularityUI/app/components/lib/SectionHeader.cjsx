@@ -1,3 +1,5 @@
+React = require '../../vendorlib/react'
+
 SectionHeader = React.createClass
   
   displayName: 'SectionHeader'
