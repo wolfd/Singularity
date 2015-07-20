@@ -25,6 +25,7 @@ import com.hubspot.singularity.data.transcoders.Transcoder;
 import com.hubspot.singularity.data.transcoders.Transcoders;
 
 public abstract class CuratorAsyncManager extends CuratorManager {
+  private static final String GET_ASYNC_THROWS_METRIC_FORMAT = "com.hubspot.singularity.data.CuratorAsyncManager.getAsyncThrows.%s";
 
   private static final Logger LOG = LoggerFactory.getLogger(CuratorAsyncManager.class);
 
@@ -83,7 +84,7 @@ public abstract class CuratorAsyncManager extends CuratorManager {
 
     final long start = System.currentTimeMillis();
 
-    try (final Timer.Context context = metricRegistry.timer(pathNameForLogs).time()) {
+    try (final Timer.Context context = metricRegistry.timer(String.format(GET_ASYNC_THROWS_METRIC_FORMAT, pathNameForLogs)).time()) {
       for (String path : paths) {
         curator.getData().inBackground(callback).forPath(path);
       }
