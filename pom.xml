@@ -38,9 +38,6 @@
     <mesos.docker.tag>0.21.1-1.1.ubuntu1404</mesos.docker.tag> <!-- 0.21.0-1.0.ubuntu1404 is missing for mesos-slave -->
     <horizon.version>0.0.10</horizon.version>
     <curator.version>2.4.2</curator.version>
-    <dep.jackson.version>2.3.3</dep.jackson.version>
-    <dep.jackson.core.version>${dep.jackson.version}</dep.jackson.core.version>
-    <dep.jackson.databind.version>${dep.jackson.version}</dep.jackson.databind.version>
   </properties>
 
   <modules>
