@@ -14,6 +14,8 @@ import org.apache.curator.utils.ZKPaths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.hubspot.mesos.JavaUtils;
@@ -27,11 +29,13 @@ public abstract class CuratorAsyncManager extends CuratorManager {
   private static final Logger LOG = LoggerFactory.getLogger(CuratorAsyncManager.class);
 
   private final long zkAsyncTimeout;
+  private final MetricRegistry metricRegistry;
 
-  public CuratorAsyncManager(CuratorFramework curator, long zkAsyncTimeout) {
+  public CuratorAsyncManager(CuratorFramework curator, long zkAsyncTimeout, MetricRegistry metricRegistry) {
     super(curator);
 
     this.zkAsyncTimeout = zkAsyncTimeout;
+    this.metricRegistry = metricRegistry;
   }
 
   private <T> List<T> getAsyncChildrenThrows(final String parent, final Transcoder<T> transcoder) throws Exception {
@@ -79,11 +83,13 @@ public abstract class CuratorAsyncManager extends CuratorManager {
 
     final long start = System.currentTimeMillis();
 
-    for (String path : paths) {
-      curator.getData().inBackground(callback).forPath(path);
-    }
+    try (final Timer.Context context = metricRegistry.timer(pathNameForLogs).time()) {
+      for (String path : paths) {
+        curator.getData().inBackground(callback).forPath(path);
+      }
 
-    checkLatch(latch, pathNameForLogs, objects, paths.size());
+      checkLatch(latch, pathNameForLogs, objects, paths.size());
+    }
 
     LOG.trace("Fetched {} objects from {} (missing {}) in {}", objects.size(), pathNameForLogs, missing.intValue(), JavaUtils.duration(start));
 

@@ -30,6 +30,8 @@ import com.hubspot.singularity.config.SingularityConfiguration;
 import com.hubspot.singularity.data.transcoders.Transcoder;
 import com.hubspot.singularity.event.SingularityEventListener;
 
+import io.dropwizard.setup.Environment;
+
 @Singleton
 public class RequestManager extends CuratorAsyncManager {
 
@@ -51,8 +53,8 @@ public class RequestManager extends CuratorAsyncManager {
 
   @Inject
   public RequestManager(SingularityConfiguration configuration, CuratorFramework curator, SingularityEventListener singularityEventListener, Transcoder<SingularityRequestCleanup> requestCleanupTranscoder,
-      Transcoder<SingularityRequestWithState> requestTranscoder, Transcoder<SingularityPendingRequest> pendingRequestTranscoder, Transcoder<SingularityRequestHistory> requestHistoryTranscoder) {
-    super(curator, configuration.getZookeeperAsyncTimeout());
+      Transcoder<SingularityRequestWithState> requestTranscoder, Transcoder<SingularityPendingRequest> pendingRequestTranscoder, Transcoder<SingularityRequestHistory> requestHistoryTranscoder, Environment environment) {
+    super(curator, configuration.getZookeeperAsyncTimeout(), environment.metrics());
 
     this.requestTranscoder = requestTranscoder;
     this.requestCleanupTranscoder = requestCleanupTranscoder;

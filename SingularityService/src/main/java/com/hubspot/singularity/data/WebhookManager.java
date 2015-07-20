@@ -21,6 +21,8 @@ import com.hubspot.singularity.config.SingularityConfiguration;
 import com.hubspot.singularity.data.transcoders.Transcoder;
 import com.hubspot.singularity.event.SingularityEventListener;
 
+import io.dropwizard.setup.Environment;
+
 @Singleton
 public class WebhookManager extends CuratorAsyncManager implements SingularityEventListener {
 
@@ -35,8 +37,8 @@ public class WebhookManager extends CuratorAsyncManager implements SingularityEv
 
   @Inject
   public WebhookManager(SingularityConfiguration configuration, CuratorFramework curator, Transcoder<SingularityWebhook> webhookTranscoder,
-      Transcoder<SingularityRequestHistory> requestHistoryTranscoder, Transcoder<SingularityTaskHistoryUpdate> taskHistoryUpdateTranscoder, Transcoder<SingularityDeployUpdate> deployWebhookTranscoder) {
-    super(curator, configuration.getZookeeperAsyncTimeout());
+      Transcoder<SingularityRequestHistory> requestHistoryTranscoder, Transcoder<SingularityTaskHistoryUpdate> taskHistoryUpdateTranscoder, Transcoder<SingularityDeployUpdate> deployWebhookTranscoder, Environment environment) {
+    super(curator, configuration.getZookeeperAsyncTimeout(), environment.metrics());
     this.webhookTranscoder = webhookTranscoder;
     this.taskHistoryUpdateTranscoder = taskHistoryUpdateTranscoder;
     this.requestHistoryTranscoder = requestHistoryTranscoder;

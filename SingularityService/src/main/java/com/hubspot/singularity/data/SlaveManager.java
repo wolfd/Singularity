@@ -9,14 +9,16 @@ import com.hubspot.singularity.SingularitySlave;
 import com.hubspot.singularity.config.SingularityConfiguration;
 import com.hubspot.singularity.data.transcoders.Transcoder;
 
+import io.dropwizard.setup.Environment;
+
 @Singleton
 public class SlaveManager extends AbstractMachineManager<SingularitySlave> {
 
   private static final String SLAVE_ROOT = "/slaves";
 
   @Inject
-  public SlaveManager(CuratorFramework curator, SingularityConfiguration configuration, Transcoder<SingularitySlave> slaveTranscoder, Transcoder<SingularityMachineStateHistoryUpdate> stateHistoryTranscoder) {
-    super(curator, configuration.getZookeeperAsyncTimeout(), slaveTranscoder, stateHistoryTranscoder);
+  public SlaveManager(CuratorFramework curator, SingularityConfiguration configuration, Transcoder<SingularitySlave> slaveTranscoder, Transcoder<SingularityMachineStateHistoryUpdate> stateHistoryTranscoder, Environment environment) {
+    super(curator, configuration.getZookeeperAsyncTimeout(), slaveTranscoder, stateHistoryTranscoder, environment.metrics());
   }
 
   @Override

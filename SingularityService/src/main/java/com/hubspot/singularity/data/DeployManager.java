@@ -33,6 +33,8 @@ import com.hubspot.singularity.data.transcoders.IdTranscoder;
 import com.hubspot.singularity.data.transcoders.Transcoder;
 import com.hubspot.singularity.event.SingularityEventListener;
 
+import io.dropwizard.setup.Environment;
+
 @Singleton
 public class DeployManager extends CuratorAsyncManager {
 
@@ -66,8 +68,8 @@ public class DeployManager extends CuratorAsyncManager {
   @Inject
   public DeployManager(SingularityConfiguration configuration, CuratorFramework curator, SingularityEventListener singularityEventListener, Transcoder<SingularityDeploy> deployTranscoder,
       Transcoder<SingularityRequestDeployState> requestDeployStateTranscoder, Transcoder<SingularityPendingDeploy> pendingDeployTranscoder, Transcoder<SingularityDeployMarker> deployMarkerTranscoder,
-      Transcoder<SingularityDeployStatistics> deployStatisticsTranscoder, Transcoder<SingularityDeployResult> deployStateTranscoder, IdTranscoder<SingularityDeployKey> deployKeyTranscoder) {
-    super(curator, configuration.getZookeeperAsyncTimeout());
+      Transcoder<SingularityDeployStatistics> deployStatisticsTranscoder, Transcoder<SingularityDeployResult> deployStateTranscoder, IdTranscoder<SingularityDeployKey> deployKeyTranscoder, Environment environment) {
+    super(curator, configuration.getZookeeperAsyncTimeout(), environment.metrics());
 
     this.singularityEventListener = singularityEventListener;
     this.pendingDeployTranscoder = pendingDeployTranscoder;

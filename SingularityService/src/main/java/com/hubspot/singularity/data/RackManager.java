@@ -9,14 +9,16 @@ import com.hubspot.singularity.SingularityRack;
 import com.hubspot.singularity.config.SingularityConfiguration;
 import com.hubspot.singularity.data.transcoders.Transcoder;
 
+import io.dropwizard.setup.Environment;
+
 @Singleton
 public class RackManager extends AbstractMachineManager<SingularityRack> {
 
   private static final String RACK_ROOT = "/racks";
 
   @Inject
-  public RackManager(CuratorFramework curator, SingularityConfiguration configuration, Transcoder<SingularityRack> rackTranscoder, Transcoder<SingularityMachineStateHistoryUpdate> stateHistoryTranscoder) {
-    super(curator, configuration.getZookeeperAsyncTimeout(), rackTranscoder, stateHistoryTranscoder);
+  public RackManager(CuratorFramework curator, SingularityConfiguration configuration, Transcoder<SingularityRack> rackTranscoder, Transcoder<SingularityMachineStateHistoryUpdate> stateHistoryTranscoder, Environment environment) {
+    super(curator, configuration.getZookeeperAsyncTimeout(), rackTranscoder, stateHistoryTranscoder, environment.metrics());
   }
 
   @Override
