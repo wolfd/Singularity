@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Set;
 
+import javax.validation.Validation;
+
 import org.apache.curator.test.TestingServer;
 import org.apache.mesos.Protos.MasterInfo;
 import org.apache.mesos.Protos.Status;
@@ -14,6 +16,7 @@ import org.apache.mesos.SchedulerDriver;
 import org.mockito.Matchers;
 import org.slf4j.LoggerFactory;
 
+import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,6 +65,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.lifecycle.Managed;
+import io.dropwizard.setup.Environment;
 import net.kencochrane.raven.Raven;
 
 public class SingularityTestModule implements Module {
@@ -126,10 +130,15 @@ public class SingularityTestModule implements Module {
                 binder.bind(LoadBalancerClient.class).toInstance(tlbc);
                 binder.bind(TestingLoadBalancerClient.class).toInstance(tlbc);
 
-                binder.bind(ObjectMapper.class).toInstance(Jackson.newObjectMapper()
+                final ObjectMapper objectMapper = Jackson.newObjectMapper()
                         .setSerializationInclusion(Include.NON_NULL)
                         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                        .registerModule(new ProtobufModule()));
+                        .registerModule(new ProtobufModule());
+                final MetricRegistry metricRegistry = new MetricRegistry();
+
+                binder.bind(ObjectMapper.class).toInstance(objectMapper);
+
+                binder.bind(Environment.class).toInstance(new Environment("test", objectMapper, Validation.buildDefaultValidatorFactory().getValidator(), metricRegistry, ClassLoader.getSystemClassLoader()));
 
                 binder.bind(HostAndPort.class).annotatedWith(named(HTTP_HOST_AND_PORT)).toInstance(HostAndPort.fromString("localhost:8080"));
 
