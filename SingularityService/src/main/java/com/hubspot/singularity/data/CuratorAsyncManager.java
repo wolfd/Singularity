@@ -83,16 +83,16 @@ public abstract class CuratorAsyncManager extends CuratorManager {
       curator.getData().inBackground(callback).forPath(path);
     }
 
-    checkLatch(latch, pathNameForLogs);
+    checkLatch(latch, pathNameForLogs, objects, paths.size());
 
     LOG.trace("Fetched {} objects from {} (missing {}) in {}", objects.size(), pathNameForLogs, missing.intValue(), JavaUtils.duration(start));
 
     return objects;
   }
 
-  private void checkLatch(CountDownLatch latch, String path) throws InterruptedException {
+  private <T> void checkLatch(CountDownLatch latch, String path, List<T> objects, int total) throws InterruptedException {
     if (!latch.await(zkAsyncTimeout, TimeUnit.MILLISECONDS)) {
-      throw new IllegalStateException(String.format("Timed out waiting response for objects from %s, waited %s millis", path, zkAsyncTimeout));
+      throw new IllegalStateException(String.format("Timed out waiting response for objects from %s, waited %s millis. Received %s of %s objects.", path, zkAsyncTimeout, objects.size(), total));
     }
   }
 
@@ -131,7 +131,7 @@ public abstract class CuratorAsyncManager extends CuratorManager {
       curator.getChildren().inBackground(callback).forPath(parent);
     }
 
-    checkLatch(latch, pathNameforLogs);
+    checkLatch(latch, pathNameforLogs, objects, parents.size());
 
     LOG.trace("Fetched {} objects from {} (missing {}) in {}", objects.size(), pathNameforLogs, missing.intValue(), JavaUtils.duration(start));
 
@@ -181,7 +181,7 @@ public abstract class CuratorAsyncManager extends CuratorManager {
       curator.checkExists().inBackground(callback).forPath(path);
     }
 
-    checkLatch(latch, pathNameforLogs);
+    checkLatch(latch, pathNameforLogs, objects, paths.size());
 
     LOG.trace("Found {} objects out of {} from {} in {}", objects.size(), paths.size(), pathNameforLogs, JavaUtils.duration(start));
 
