@@ -8,6 +8,7 @@ NewDeployController  = require 'controllers/NewDeploy'
 
 RequestDetailController = require 'controllers/RequestDetail'
 RequestsTableController = require 'controllers/RequestsTable'
+AggregateTailController = require 'controllers/AggregateTail'
 
 TasksTableController = require 'controllers/TasksTable'
 TaskDetailController = require 'controllers/TaskDetail'
@@ -38,6 +39,8 @@ class Router extends Backbone.Router
         'request/:requestId/deploy/:deployId(/)': 'deployDetail'
 
         'request/:requestId/deploy(/)': 'newDeploy'
+
+        'request/:requestId/tail/*path': 'aggregateTail'
 
         'tasks/:state/:searchFilter(/)': 'tasksTable'
         'tasks/:state(/)': 'tasksTable'
@@ -88,6 +91,10 @@ class Router extends Backbone.Router
     tail: (taskId, path = '') ->
         offset = window.location.hash.substr(1) || null
         app.bootstrapController new TailController {taskId, path, offset}
+
+    aggregateTail: (requestId, path = '') ->
+        offset = window.location.hash.substr(1) || null
+        app.bootstrapController new AggregateTailController {requestId, path, offset}
 
     racks: (state = 'all') ->
         app.bootstrapController new RacksController {state}
