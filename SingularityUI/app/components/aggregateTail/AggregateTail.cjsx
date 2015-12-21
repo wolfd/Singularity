@@ -204,6 +204,7 @@ AggregateTail = React.createClass
       </div>
 
   render: ->
+
     <div>
       <Header
         path={@props.path}

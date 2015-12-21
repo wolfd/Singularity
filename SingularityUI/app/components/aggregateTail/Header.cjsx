@@ -1,8 +1,22 @@
+TaskHistory = require '../../models/TaskHistory'
 
 Header = React.createClass
 
+  mixins: [Backbone.React.Component.mixin]
+
   getInitialState: ->
     searchVal: @props.search
+
+  componentWillUpdate: (nextProps, nextState) ->
+    tasks = {}
+    if nextProps.activeTasks.length > 0 and !@gotTasks
+      @gotTasks = true
+      for t in nextProps.activeTasks
+        tasks[t.id] = new TaskHistory {taskId: t.id}
+        tasks[t.id].fetch()
+      Backbone.React.Component.mixin.on(@, {
+        models: tasks
+      });
 
   handleSearchChange: (event) ->
     @setState
@@ -91,7 +105,7 @@ Header = React.createClass
   renderListItems: ->
     tasks = _.sortBy(@props.activeTasks, (t) => t.taskId.instanceNo).map (task, i) =>
         taskId = task.id
-        <li key={i}>
+        <li key={i} title={@state[task.id]?.task?.taskId?.host or ''}>
           <a onClick={() => @props.toggleViewingInstance(taskId)}>
             <span className="glyphicon glyphicon-#{if taskId in @props.viewingInstances then 'check' else 'unchecked'}"></span>
             <span> Instance {task.taskId.instanceNo}</span>
