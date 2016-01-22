@@ -292,7 +292,7 @@ class Request extends Model
             input: """
                 <input name="duration" id="disable-healthchecks-expiration" type="text" placeholder="Expiration (optional)" />
                 <span class="help">If an expiration duration is specified, this action will be reverted afterwards. Accepts any english time duration. (Days, Hr, Min...)</span>
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Disabling healthchecks for ____" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (Default: Disabling healthchecks for ____)" />
             """
             buttons: [
                 $.extend _.clone(vex.dialog.buttons.YES), text: 'Disable Healthchecks'
@@ -315,7 +315,7 @@ class Request extends Model
         vex.dialog.open
             message: "Turn <strong>on</strong> healthchecks for this request."
             input: """
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Enabling Healthchecks for ____" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (Default: Enabling Healthchecks for ____)" />
                 <input name="duration" id="disable-healthchecks-expiration" type="text" placeholder="Expiration (optional)" />
                 <span class="help">If an expiration duration is specified, this action will be reverted afterwards. Accepts any english time duration. (Days, Hr, Min...)</span>
             """
@@ -341,7 +341,7 @@ class Request extends Model
         vex.dialog.confirm
             message: unpauseTemplate id: @get "id"
             input: """
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Unpausing request" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (Default: Unpausing request)" />
             """
             callback: (confirmed) =>
                 return unless confirmed
@@ -453,7 +453,7 @@ class Request extends Model
         vex.dialog.confirm
             message: removeTemplate id: @get "id"
             input: """
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Deleting Request" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (Default: Deleting Request)" />
             """
             callback: (confirmed) =>
                 return if not confirmed
@@ -466,13 +466,22 @@ class Request extends Model
         vex.dialog.confirm
             message: bounceTemplate id: @get "id"
             input: """
-                <input name="message" id="bounce-message" type="text" placeholder="Message (optional)" />
+                <input name="message" id="bounce-message" type="text" placeholder="Message (Default: Bouncing [+ info])" />
             """
             callback: (confirmed) =>
                 return if not confirmed
                 confirmed.incremental = $('.vex #incremental-bounce').is ':checked'
                 confirmed.skipHealthchecks = $('.vex #skip-healthchecks').is ':checked'
                 confirmed.duration = $('.vex #bounce-expiration').val()
+                if !confirmed.message
+                    message = "Bouncing"
+                    if confirmed.incremental
+                        message = "Incrementally " + message
+                    if confirmed.skipHealthchecks
+                        message += "; Skipping healthchecks"
+                    if confirmed.duration
+                        message += "; Aborting after " + confirmed.duration
+                    confirmed.message = message
 
                 if !confirmed.duration or (confirmed.duration and @_validateDuration(confirmed.duration, @promptBounce))
                     @bounce(confirmed).done callback
