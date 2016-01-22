@@ -236,18 +236,25 @@ class Request extends Model
                 killTasks = not $('.vex #kill-tasks').is ':checked'
                 duration = $('.vex #pause-expiration').val()
                 message = $('.vex #pause-message').val()
+                if !message
+                    message = "Pausing request"
+                    if duration
+                        message += " for " + duration
+                    else
+                        message += " forever (or until manually unpaused)"
 
                 if !duration or (duration and @_validateDuration(duration, @promptPause))
                     @pause(killTasks, duration, message).done callback
 
     promptScale: (callback) =>
+        instances = @get 'instances'
         vex.dialog.open
             message: "Enter the desired number of instances to run for request:"
             input:
                 scaleTemplate
                     id: @get "id"
                     bounceAfterScale: @get "bounceAfterScale"
-                    placeholder: @get 'instances'
+                    placeholder: instances
             buttons: [
                 $.extend _.clone(vex.dialog.buttons.YES), text: 'Scale'
                 vex.dialog.buttons.NO
@@ -265,6 +272,13 @@ class Request extends Model
                 incremental = $('.vex #incremental-bounce').is ':checked'
                 message = $('.vex #scale-message').val()
                 duration = $('.vex #scale-expiration').val()
+                if !message
+                    message = "Scaling from " + instances + " to " + data.instances + " instances"
+                    if duration
+                        message += " for " + duration
+                    if bounce
+                        message += " and bouncing"
+                    data.message = message
                 if !duration or (duration and @_validateDuration(duration, @promptScale))
                     @scale(data).done =>
                         if bounce
@@ -278,7 +292,7 @@ class Request extends Model
             input: """
                 <input name="duration" id="disable-healthchecks-expiration" type="text" placeholder="Expiration (optional)" />
                 <span class="help">If an expiration duration is specified, this action will be reverted afterwards. Accepts any english time duration. (Days, Hr, Min...)</span>
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (optional)" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Disabling healthchecks for ____" />
             """
             buttons: [
                 $.extend _.clone(vex.dialog.buttons.YES), text: 'Disable Healthchecks'
@@ -288,6 +302,12 @@ class Request extends Model
                 return unless data
                 duration = $('.vex #disable-healthchecks-expiration').val()
                 message = $('.vex #disable-healthchecks-message').val()
+                if message == ""
+                    message = "Disabling healthchecks"
+                    if duration == ""
+                        message += " for ever and eternity (or until manually enabled)"
+                    else
+                        message += " for " + duration
                 if !duration or (duration and @_validateDuration(duration, @promptDisableHealthchecks))
                     @disableHealthchecks(message, duration).done callback
 
@@ -295,7 +315,7 @@ class Request extends Model
         vex.dialog.open
             message: "Turn <strong>on</strong> healthchecks for this request."
             input: """
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (optional)" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Enabling Healthchecks for ____" />
                 <input name="duration" id="disable-healthchecks-expiration" type="text" placeholder="Expiration (optional)" />
                 <span class="help">If an expiration duration is specified, this action will be reverted afterwards. Accepts any english time duration. (Days, Hr, Min...)</span>
             """
@@ -307,6 +327,13 @@ class Request extends Model
                 return unless data
                 duration = $('.vex #disable-healthchecks-expiration').val()
                 message = $('.vex #disable-healthchecks-message').val()
+                useTmpMsg = false
+                if message == ""
+                    message = "Enabling healthchecks"
+                    if duration == ""
+                        message += " for ever and eternity (or until manually disabled)"
+                    else
+                        message += " for " + duration
                 if !duration or (duration and @_validateDuration(duration, @promptEnableHealthchecks))
                     @enableHealthchecks(message, duration).done callback
 
@@ -314,10 +341,12 @@ class Request extends Model
         vex.dialog.confirm
             message: unpauseTemplate id: @get "id"
             input: """
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (optional)" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Unpausing request" />
             """
             callback: (confirmed) =>
                 return unless confirmed
+                if !confirmed.message
+                    confirmed.message = "Unpausing request"
                 @unpause(confirmed).done callback
 
     promptRun: (callback) =>
