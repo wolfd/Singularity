@@ -229,7 +229,7 @@ class TasksView extends View
         vex.dialog.confirm
             input: """
                 <input name="wait-for-replacement-task" id="wait-for-replacement-task" type="checkbox" checked /> Wait for replacement task to start before killing this task
-                <input name="message" type="text" placeholder="Message (optional)" />
+                <input name="message" type="text" placeholder="Message (Default: User requested kill of task [wait?])" />
             """
             buttons: [
                 $.extend {}, vex.dialog.buttons.YES,
@@ -242,6 +242,11 @@ class TasksView extends View
             callback: (confirmed) =>
                 return unless confirmed
                 waitForReplacementTask = $('.vex #wait-for-replacement-task').is ':checked'
+                if confirmed.message == ""
+                    message = "User requested kill of task"
+                    if !waitForReplacementTask
+                        message += " without waiting for a replacement task"
+                    confirmed.message = message
                 deleteRequest = @collection.get(id).kill(confirmed.message, false, waitForReplacementTask)
 
                 # ignore errors (probably means you tried
