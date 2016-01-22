@@ -453,11 +453,14 @@ class Request extends Model
         vex.dialog.confirm
             message: removeTemplate id: @get "id"
             input: """
-                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Message (optional)" />
+                <input name="message" id="disable-healthchecks-message" type="text" placeholder="Deleting Request" />
             """
             callback: (confirmed) =>
                 return if not confirmed
-                @destroy(confirmed.message).done callback
+                message = confirmed.message
+                if !message
+                    message = "Deleting Request"
+                @destroy(message).done callback
 
     promptBounce: (callback) =>
         vex.dialog.confirm
