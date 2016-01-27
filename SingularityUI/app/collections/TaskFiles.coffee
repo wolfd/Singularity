@@ -7,6 +7,10 @@ class TaskFiles extends Collection
 
     model: TaskFile
 
+    sortBy: 'name'
+
+    sortOrder: 1
+
     initialize: (models, { @taskId, @path }) ->
 
     fetch: (params) ->
@@ -53,20 +57,16 @@ class TaskFiles extends Collection
 
         taskFiles
 
-    comparator: (a, b) ->
-        return @nameComparator(a, b)
+    sortCollection: (attr) ->
+        @sortAttribute = attr
+        @sort
 
-    nameComparator: (a, b) ->
+    comparator: (a, b) ->
         if a.get('isDirectory') and not b.get('isDirectory')
             return -1
         else if not a.get('isDirectory') and b.get('isDirectory')
             return 1
-        else if a.get('name') > b.get('name')
-            return 1
-        else if a.get('name') < b.get('name')
-            return -1
-        else
-            return 0
+        return @attributeComparator(@sortBy, @sortOrder, a, b)
 
     testSandbox: ->
         $.ajax

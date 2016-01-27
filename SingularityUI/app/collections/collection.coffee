@@ -15,4 +15,15 @@ class Collection extends Backbone.Collection
             @each (model) => model.synced = true
         @on 'reset', => @synced = false
 
+    # Call this to sort things. For sortOrder, 
+    # 1 means ascending and -1 means descending.
+    # a and b are the things to compare.
+    attributeComparator: (attr, sortOrder, a, b) ->
+        if a.get(attr) > b.get(attr)
+            return sortOrder
+        else if a.get(attr) < b.get(attr)
+            return sortOrder * -1
+        else
+            return 0
+
 module.exports = Collection

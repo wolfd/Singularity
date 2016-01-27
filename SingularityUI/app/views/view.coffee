@@ -49,4 +49,5 @@ class View extends Backbone.View
           next: '<span class="glyphicon glyphicon-chevron-right"></span>'
       $('table.paginated').css('display', 'table');
 
+
 module.exports = View
