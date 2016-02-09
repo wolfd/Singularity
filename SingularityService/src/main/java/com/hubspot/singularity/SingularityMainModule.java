@@ -93,6 +93,9 @@ public class SingularityMainModule implements Module {
   public static final String NEW_TASK_THREADPOOL_NAME = "_new_task_threadpool";
   public static final Named NEW_TASK_THREADPOOL_NAMED = Names.named(NEW_TASK_THREADPOOL_NAME);
 
+  public static final String CHECK_QUEUED_MAIL_THREADPOOL_NAME = "_check_queued_mail_threadpool";
+  public static final Named CHECK_QUEUED_MAIL_THREADPOOL_NAMED = Names.named(CHECK_QUEUED_MAIL_THREADPOOL_NAME);
+
   public static final String CURRENT_HTTP_REQUEST = "_singularity_current_http_request";
 
   private final SingularityConfiguration configuration;
@@ -144,13 +147,20 @@ public class SingularityMainModule implements Module {
 
     binder.bind(SingularityManagedScheduledExecutorServiceFactory.class).in(Scopes.SINGLETON);
 
-    binder.bind(ScheduledExecutorService.class).annotatedWith(HEALTHCHECK_THREADPOOL_NAMED).toProvider(new SingularityManagedScheduledExecutorServiceProvider(configuration.getHealthcheckStartThreads(),
+    binder.bind(ScheduledExecutorService.class).annotatedWith(HEALTHCHECK_THREADPOOL_NAMED).toProvider(
+        new SingularityManagedScheduledExecutorServiceProvider(configuration.getHealthcheckStartThreads(),
             configuration.getThreadpoolShutdownDelayInSeconds(),
             "healthcheck")).in(Scopes.SINGLETON);
 
-    binder.bind(ScheduledExecutorService.class).annotatedWith(NEW_TASK_THREADPOOL_NAMED).toProvider(new SingularityManagedScheduledExecutorServiceProvider(configuration.getCheckNewTasksScheduledThreads(),
-        configuration.getThreadpoolShutdownDelayInSeconds(),
-        "check-new-task")).in(Scopes.SINGLETON);
+    binder.bind(ScheduledExecutorService.class).annotatedWith(NEW_TASK_THREADPOOL_NAMED).toProvider(
+        new SingularityManagedScheduledExecutorServiceProvider(configuration.getCheckNewTasksScheduledThreads(),
+            configuration.getThreadpoolShutdownDelayInSeconds(),
+            "check-new-task")).in(Scopes.SINGLETON);
+
+    binder.bind(ScheduledExecutorService.class).annotatedWith(CHECK_QUEUED_MAIL_THREADPOOL_NAMED).toProvider(
+        new SingularityManagedScheduledExecutorServiceProvider(configuration.getCheckQueuedMailScheduledThreads(),
+            configuration.getThreadpoolShutdownDelayInSeconds(),
+            "check-queued-mail")).in(Scopes.SINGLETON);
 
     binder.bind(SingularityGraphiteReporterManaged.class).in(Scopes.SINGLETON);
   }

@@ -42,6 +42,8 @@ public class SingularityConfiguration extends Configuration {
 
   private long checkExpiringUserActionEveryMillis = TimeUnit.SECONDS.toMillis(45);
 
+  private int checkQueuedMailScheduledThreads = 3;
+
   private int checkNewTasksScheduledThreads = 3;
 
   private long checkReconcileWhenRunningEveryMillis = TimeUnit.SECONDS.toMillis(30);
@@ -680,6 +682,14 @@ public class SingularityConfiguration extends Configuration {
 
   public void setDefaultSlavePlacement(SlavePlacement defaultSlavePlacement) {
     this.defaultSlavePlacement = defaultSlavePlacement;
+  }
+
+  public int getCheckQueuedMailScheduledThreads() {
+    return checkQueuedMailScheduledThreads;
+  }
+
+  public void setCheckQueuedMailScheduledThreads(int checkQueuedMailScheduledThreads) {
+    this.checkQueuedMailScheduledThreads = checkQueuedMailScheduledThreads;
   }
 
   public void setDefaultValueForKillTasksOfPausedRequests(boolean defaultValueForKillTasksOfPausedRequests) {
