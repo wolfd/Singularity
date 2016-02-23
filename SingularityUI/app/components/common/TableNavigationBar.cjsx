@@ -136,7 +136,7 @@ TableNavigationBar = React.createClass
         - sortDirection SortDirection (optional)
         - sortDirectionChoices Array/Enum object (optional; only used if sortDirection is provided. 
                 Needed becasue each project may represent sort direction differently internally)
-        - setSortDirection function (optional; only used if sortOrder is provided)
+        - setSortDirection function (optional; only used if sortDirection is provided)
     ###
     render: ->
         <div>

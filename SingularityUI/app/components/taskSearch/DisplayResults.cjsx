@@ -108,7 +108,7 @@ DisplayResults = React.createClass
             increasePageNumber = @props.increasePageNumber
             setPageNumber = @props.setPageNumber
             numberPerPage = @props.count
-            objectsBeingDisplayed = "Tasks"
+            objectsBeingDisplayed = 'Tasks'
             numberPerPageChoices = @props.countChoices
             setNumberPerPage = @props.updateCount
             sortDirection = @props.sortDirection
@@ -125,10 +125,10 @@ DisplayResults = React.createClass
             />
             <h2>Query Parameters</h2>
             <QueryParameters
-                colSize = "md-6"
+                colSize = 'md-6'
                 parameters = {@getQueryParams()}
             />
-            <button className="btn btn-primary" onClick={@props.returnToForm}>Modify Query Parameters</button>
+            <button className='btn btn-primary' onClick={@props.returnToForm}>Modify Query Parameters</button>
             <h2>Tasks</h2>
             {@renderPageNavBar()}
             <TaskTable

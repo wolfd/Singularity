@@ -4,7 +4,10 @@ Table = React.createClass
 
     renderTableHeader: ->
         @props.columnNames.map (columnName, key) =>
-            <th key={key}>{columnName}</th>
+            if typeof columnName is 'object' # For now there's no functionality for extra options here. Feel free to add
+                <th key={key}>{columnName.name}</th>
+            else
+                <th key={key}>{columnName}</th>
 
     renderTableRow: (elements) ->
         elements.map (element, key) =>
@@ -24,6 +27,11 @@ Table = React.createClass
     getClassName: ->
         return "table #{@props.tableClassOpts}"
 
+    ###
+    Props:
+        - columnNames Array (String or Object)
+        - tableRows Object
+    ###
     render: ->
         <table className={@getClassName()}>
             <thead>
