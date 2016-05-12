@@ -44,7 +44,8 @@ var templateData = {
 var dest = path.resolve(__dirname, '../SingularityService/target/generated-resources/assets');
 var testDest = ''
 
-var webpack = require('webpack-stream');
+var webpackStream = require('webpack-stream');
+var webpack = require('webpack');
 var webpackConfig = require('./webpack.config');
 var WebpackDevServer = require('webpack-dev-server');
 
@@ -64,7 +65,7 @@ gulp.task('fonts', function() {
 
 gulp.task('scripts', function () {
   return gulp.src(webpackConfig.entry.app)
-    .pipe(webpack(webpackConfig))
+    .pipe(webpackStream(webpackConfig))
     .pipe(gulp.dest(dest + '/static/js'))
 });
 
@@ -118,12 +119,24 @@ gulp.task('serve', ['html', 'styles', 'fonts', 'images', 'css-images'], function
   })
 })
 
-gulp.task('test', function () {
-  gulp.src(webpackConfig.entry.app)
-    .pipe(webpack(merge(webpackConfig, {devtool: 'cheap-eval-source-map'})));
-  return gulp.src(dest + '/static/js/app.js')
-    .pipe(console.log)
-    //.pipe(mocha({}));
+gulp.task('build-test', function () {
+  // disable vendor bundling -- this is kinda ghetto
+  delete webpackConfig.plugins.pop()
+  delete webpackConfig.entry.vendor
+
+  return gulp.src('./test/reducers/taskGroups.coffee')
+    .pipe(webpackStream(merge(webpackConfig, {
+      entry: {
+        test: './test/reducers/taskGroups.coffee'
+      },
+      output: {path: dest, filename: 'test.js'}
+    })))
+    .pipe(gulp.dest(dest + '/static/js'))
 });
+
+gulp.task('test', ['build-test'], function () {
+  return gulp.src(dest + '/static/js/test.js')
+    .pipe(mocha({}))
+})
 
 gulp.task("default", ["build"]);
