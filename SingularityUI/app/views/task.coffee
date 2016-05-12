@@ -51,7 +51,7 @@ class TaskView extends View
         @subviews.healthChecks.expandToggleIfClosed()
 
     viewJson: (event) ->
-        utils.viewJSON @model
+        browserUtils.viewJSON @model
 
     viewJsonProperty: (event) =>
         index = $(event.target).data('index')
@@ -70,7 +70,7 @@ class TaskView extends View
             else
                 modelClone.attributes[key].splice 0, modelClone.attributes[key].length, value[index]
 
-        utils.viewJSON modelClone
+        browserUtils.viewJSON modelClone
 
     executeCommand: (event) ->
         event.preventDefault()

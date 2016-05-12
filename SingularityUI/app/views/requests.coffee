@@ -227,7 +227,7 @@ class RequestsView extends View
             # After the first stage of rendering we want to fix
             # the width of the columns to prevent having to recalculate
             # it constantly
-            utils.fixTableColumns $table
+            browserUtils.fixTableColumns $table
         else
             $tableBody.append $contents
 
@@ -298,7 +298,7 @@ class RequestsView extends View
 
     viewJson: (e) ->
         id = $(e.target).parents('tr').data 'request-id'
-        utils.viewJSON @collection.get id
+        browserUtils.viewJSON @collection.get id
 
     removeRequest: (e) ->
         $row = $(e.target).parents 'tr'

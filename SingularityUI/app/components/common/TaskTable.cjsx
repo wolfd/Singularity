@@ -6,7 +6,7 @@ Link = require './atomicDisplayItems/Link'
 IconButton = require './atomicDisplayItems/IconButton'
 Glyphicon = require './atomicDisplayItems/Glyphicon'
 PlainText = require './atomicDisplayItems/PlainText'
-Utils = require '../../utils'
+BrowserUtils = require '../../browserUtils'
 
 TaskTable = React.createClass
 
@@ -70,7 +70,7 @@ TaskTable = React.createClass
         ]
         taskTableData = []
         @props.models.map (task) ->
-            viewJsonFn = (event) -> Utils.viewJSON task
+            viewJsonFn = (event) -> BrowserUtils.viewJSON task
             taskTableData.push({
                 dataId: task.taskId.id
                 dataCollection: 'taskHistory'

@@ -25,7 +25,7 @@ TaskSearchController = require 'controllers/TaskSearch'
 
 WebhooksController = require 'controllers/Webhooks'
 
-Utils = require './utils'
+BrowserUtils = require 'browserUtils'
 
 class Router extends Backbone.Router
 
@@ -106,7 +106,7 @@ class Router extends Backbone.Router
         initialOffset = parseInt(window.location.hash.substr(1), 10) || null
         splits = taskId.split('-')
         requestId = splits.slice(0, splits.length - 5).join('-')
-        params = Utils.getQueryParams()
+        params = BrowserUtils.getQueryParams()
 
         search = params.search || ''
 
@@ -129,7 +129,7 @@ class Router extends Backbone.Router
     aggregateTail: (requestId, path = '') ->
         initialOffset = parseInt(window.location.hash.substr(1), 10) || null
 
-        params = Utils.getQueryParams()
+        params = BrowserUtils.getQueryParams()
         if params.taskIds
             taskIds = params.taskIds.split(',')
         else

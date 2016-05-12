@@ -1,6 +1,6 @@
 { combineReducers } = require 'redux'
-
 { getTaskDataFromTaskId } = require '../utils'
+TaskGroupsHelper = require './helpers/taskGroupsHelper'
 
 moment = require 'moment'
 
@@ -125,12 +125,30 @@ ACTIONS = {
   LOG_REQUEST_END: (state, {taskGroupId}) ->
     return updateTaskGroup(state, taskGroupId, {pendingRequests: false})
 
-  # We've received logging data for a task
-  LOG_TASK_DATA: (state, {taskGroupId, taskId, offset, nextOffset, maxLines, data, append}) ->
+  LOG_TASK_DATA_2: (state, {taskGroupId, taskId, offset, maxLines, data}) ->
     taskGroup = state[taskGroupId]
 
     # bail early if no data
-    if data.length is 0 and task.loadedData
+    if data.length is 0
+      return state
+
+    # [{timestamp, data, offset, taskId}, ...]
+    lines = TaskGroupsHelper.splitStringIntoTimestampedLines taskId, offset, data
+
+    # retrieve or build task buffers
+    taskBuffer = taskGroup.taskBuffer[taskId] || TaskGroupsHelper.buildEmptyBuffer(taskId, 0)
+
+
+
+
+
+  # We've received logging data for a task
+  LOG_TASK_DATA: (state, {taskGroupId, taskId, offset, nextOffset, maxLines, data, append}) ->
+    console.log(state, taskGroupId, taskId, offset, nextOffset, maxLines, data, append)
+    taskGroup = state[taskGroupId]
+
+    # bail early if no data
+    if data.length is 0
       return state
 
     # split task data into separate lines, attempt to parse timestamp

@@ -200,7 +200,7 @@ class TasksView extends View
             # After the first stage of rendering we want to fix
             # the width of the columns to prevent having to recalculate
             # it constantly
-            utils.fixTableColumns $table
+            browserUtils.fixTableColumns $table
         else
             $tableBody.append $contents
 
@@ -258,7 +258,7 @@ class TasksView extends View
         if task.nextRunAt
             @trigger 'getPendingTask', task
         else
-            utils.viewJSON @collection.get task.taskId
+            browserUtils.viewJSON @collection.get task.taskId
 
     removeTask: (e) ->
         $row = $(e.target).parents 'tr'

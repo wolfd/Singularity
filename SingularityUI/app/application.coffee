@@ -7,6 +7,8 @@ GlobalSearchView = require 'views/globalSearch'
 
 Sortable = require 'sortable'
 
+BrowserUtils = require 'browserUtils'
+
 class Application
 
     # Holds `nav`, `globalSearch`, and `current`
@@ -144,7 +146,7 @@ class Application
                     linkText: 'Copy error message'
                     copyLink: '.copy-link'
 
-                utils.makeMeCopy(options)
+                BrowserUtils.makeMeCopy(options)
                 throw new Error "AJAX Error"
 
     # Usually called by Controllers when they're initialized. Loader is overwritten by views

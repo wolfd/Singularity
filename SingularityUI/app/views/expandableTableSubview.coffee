@@ -100,7 +100,7 @@ class ExpandableTableSubview extends View
     expand: ->
         @expanded = true
 
-        utils.animatedExpansion @$el, @shrink
+        browserUtils.animatedExpansion @$el, @shrink
 
         # Container dimensions
         containerOffset = @$el.offset().top

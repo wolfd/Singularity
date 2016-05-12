@@ -135,7 +135,7 @@ class DashboardView extends View
             Messenger().error
                 message: "<p>Could not find request #{id}. Perhaps someone removed it?</p>"
             return
-        utils.viewJSON request
+        browserUtils.viewJSON request
 
     removeRequest: (e) ->
         $row = $(e.target).parents 'tr'

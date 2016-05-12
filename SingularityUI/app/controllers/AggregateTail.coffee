@@ -7,8 +7,6 @@ RequestTasks = require '../collections/RequestTasks'
 
 AggregateTailView = require '../views/aggregateTail'
 
-Utils = require '../utils'
-
 class AggregateTailController extends Controller
 
     initialize: ({@requestId, @path, @offset}) ->
@@ -34,7 +32,7 @@ class AggregateTailController extends Controller
     fetchCollections: ->
       @collections.activeTasks.fetch().done =>
         taskIds = @collections.activeTasks.pluck('id')
-        params = Utils.getQueryParams()
+        params = browserUtils.getQueryParams()
         if params.taskIds
           taskIds = _.union taskIds, params.taskIds.split(',')
 

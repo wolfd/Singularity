@@ -32,7 +32,7 @@ class SimpleSubview extends View
 
         @$('.actions-column a[title]').tooltip()
 
-        utils.setupCopyLinks @$el if @$('.horizontal-description-list').length
+        browserUtils.setupCopyLinks @$el if @$('.horizontal-description-list').length
 
         super.afterRender()
 

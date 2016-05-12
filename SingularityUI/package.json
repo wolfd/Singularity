@@ -13,8 +13,9 @@
   },
   "bin": {},
   "scripts": {
-    "start": "brunch watch --server",
-    "test": "mocha --compilers coffee:coffee-script/register --recursive"
+    "start": "gulp serve",
+    "test": "node ./node_modules/mocha-webpack/bin/mocha-webpack --webpack-config webpack.config.js \"test/**/*.coffee\"",
+    "test2": "webpack test/reducers/taskGroups.coffee --output-filename test.js --target node && mocha ../SingularityService/target/generated-resources/assets/test.js"
   },
   "dependencies": {
     "backbone": "~1.2.3",
@@ -61,14 +62,16 @@
     "exports-loader": "^0.6.3",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
+    "gulp-mocha": "^2.2.0",
     "gulp-mustache": "^2.2.0",
     "gulp-stylus": "^2.3.0",
     "gulp-util": "^3.0.7",
     "handlebars": "^4.0.5",
     "handlebars-template-loader": "^0.5.5",
     "mocha": "^2.4.5",
+    "mocha-webpack": "^0.3.1",
     "nib": "^1.1.0",
-    "webpack": "^1.12.14",
+    "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "webpack-merge": "^0.8.4",
     "webpack-stream": "^3.1.0"

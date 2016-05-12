@@ -40,7 +40,7 @@ class TasksTableController extends Controller
         app.showFixedPageLoader()
         @collections.tasksPending = new TasksPending [], {requestID: task.requestId}
         @collections.tasksPending.fetch().done =>
-            utils.viewJSON @collections.tasksPending.getTaskByRuntime(task.nextRunAt), (resp) =>
+            browserUtils.viewJSON @collections.tasksPending.getTaskByRuntime(task.nextRunAt), (resp) =>
                 if resp.error
                     Messenger().error
                         message:   "<p>This task is no longer pending.</p>"

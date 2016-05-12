@@ -8,8 +8,6 @@ TaskFiles = require '../collections/TaskFiles'
 taskPollerWaitingTemplate = require 'templates/vex/taskPollerWaiting'
 taskPollingFailureTemplate = require 'templates/vex/taskPollingFailure'
 
-Utils = require '../utils'
-
 vex = require 'vex.dialog'
 moment = require 'moment'
 
@@ -98,7 +96,7 @@ class TaskPoller extends Backbone.View
     fetchTask: (task) =>
         taskFetch = task.fetch()
         taskFetch.error (error) ->
-            Utils.ignore404 error # 404 is expected unless the task is in a terminal state
+            browserUtils.ignore404 error # 404 is expected unless the task is in a terminal state
             # Some browsers will log the http error no matter what, so let the user know that it's ok
             # Not all browsers explicitly say it's a 404, but most say some variant of 'not found'
             console.log "This 'not found' error was expected and may safely be ignored." if error.status is 404

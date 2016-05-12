@@ -42,10 +42,13 @@ var templateData = {
 }
 
 var dest = path.resolve(__dirname, '../SingularityService/target/generated-resources/assets');
+var testDest = ''
 
 var webpack = require('webpack-stream');
 var webpackConfig = require('./webpack.config');
 var WebpackDevServer = require('webpack-dev-server');
+
+var mocha = require('gulp-mocha');
 
 gulp.task("clean", function() {
   return del([
@@ -106,7 +109,7 @@ gulp.task('build', ['clean'], function () {
 gulp.task('serve', ['html', 'styles', 'fonts', 'images', 'css-images'], function () {
   gulp.watch('app/**/*.styl', ['styles'])
 
-  new WebpackDevServer(require('webpack')(merge(webpackConfig, {devtool: 'eval'})), {
+  new WebpackDevServer(require('webpack')(merge(webpackConfig, {devtool: 'cheap-eval-source-map'})), {
     contentBase: dest,
     historyApiFallback: true
   }).listen(3334, "localhost", function (err) {
@@ -114,5 +117,13 @@ gulp.task('serve', ['html', 'styles', 'fonts', 'images', 'css-images'], function
     gutil.log("[webpack-dev-server]", "Development server running on port 3334");
   })
 })
+
+gulp.task('test', function () {
+  gulp.src(webpackConfig.entry.app)
+    .pipe(webpack(merge(webpackConfig, {devtool: 'cheap-eval-source-map'})));
+  return gulp.src(dest + '/static/js/app.js')
+    .pipe(console.log)
+    //.pipe(mocha({}));
+});
 
 gulp.task("default", ["build"]);

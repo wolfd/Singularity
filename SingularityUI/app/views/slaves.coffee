@@ -59,7 +59,7 @@ class SlavesView extends View
 
         if @state and @initialPageLoad
             return if @state is 'all'
-            utils.scrollTo "##{@state}"
+            browserUtils.scrollTo "##{@state}"
             @initialPageLoad = false
 
         super.afterRender()

@@ -68,10 +68,10 @@ class RequestView extends View
 
         # Need to reach into subviews to get the necessary data
         collection = @subviews[collectionName].collection
-        utils.viewJSON collection.get id
+        browserUtils.viewJSON collection.get id
 
     viewObjectJson: (e) =>
-        utils.viewJSON @model
+        browserUtils.viewJSON @model
 
     removeRequest: (e) =>
         @model.promptRemove =>
