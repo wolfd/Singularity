@@ -1,0 +1,25 @@
+{
+  "name": "singularityui-tailer",
+  "version": "0.7.7",
+  "description": "Tailer portion of the Singularity UI",
+  "main": "lib/index.js",
+  "scripts": {},
+  "author": "Tom Petr <tpetr@hubspot.com> (https://github.com/tpetr)",
+  "license": "ISC",
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "humanize-plus": "^1.8.2",
+    "jquery": "^2.2.3",
+    "moment": "^2.13.0",
+    "q": "^1.4.1",
+    "react": "^15.0.2",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-cjsx": "^4.1.0"
+  }
+}

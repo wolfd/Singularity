@@ -1,8 +1,8 @@
 { combineReducers } = require 'redux'
 
-taskGroups = require './taskGroups'
+taskGroups = require '../../SingularityTailer/reducers/taskGroups'
+tasks = require '../../SingularityTailer/reducers/tasks'
 activeRequest = require './activeRequest'
-tasks = require './tasks'
 
 path = (state='', action) ->
   if action.type is 'LOG_INIT'

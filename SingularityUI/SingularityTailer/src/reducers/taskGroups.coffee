@@ -1,8 +1,19 @@
 { combineReducers } = require 'redux'
 
-{ getTaskDataFromTaskId } = require '../utils'
-
 moment = require 'moment'
+_ = require 'underscore'
+
+getTaskDataFromTaskId: (taskId) ->
+  splits = taskId.split('-')
+  {
+      id: taskId
+      rackId: splits[splits.length - 1]
+      host: splits[splits.length - 2]
+      instanceNo: splits[splits.length - 3]
+      startedAt: splits[splits.length - 4]
+      deployId: splits[splits.length - 5]
+      requestId: splits[0..splits.length - 6].join '-'
+  }
 
 buildTaskGroup = (taskIds, search) ->
   {

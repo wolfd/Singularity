@@ -1,3 +1,5 @@
+_ = require 'underscore'
+
 updateTask = (state, taskId, updates) ->
   newState = Object.assign({}, state)
   newState[taskId] = Object.assign({}, state[taskId], updates)

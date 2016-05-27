@@ -1,10 +1,10 @@
 React = require 'react'
 LogLine = require './LogLine'
 Humanize = require 'humanize-plus'
-LogLines = require '../../collections/LogLines'
+_ = require 'underscore'
 
 { connect } = require 'react-redux'
-{ taskGroupTop, taskGroupBottom } = require '../../actions/log'
+{ taskGroupTop, taskGroupBottom } = require '../actions'
 
 sum = (numbers) ->
   total = 0

@@ -1,6 +1,6 @@
 React = require 'react'
 TaskGroupHeader = require './TaskGroupHeader'
-LogLines = require './LogLines'
+LogLines = require '../../../SingularityTailer/components/LogLines'
 LoadingSpinner = require './LoadingSpinner'
 FileNotFound = require './FileNotFound'
 classNames = require 'classnames'
