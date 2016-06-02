@@ -120,7 +120,7 @@ gulp.task('build', ['clean'], function () {
 gulp.task('serve', ['html', 'styles', 'fonts', 'images', 'css-images'], function () {
   gulp.watch('app/**/*.styl', ['styles'])
 
-  new WebpackDevServer(webpackStream(merge(webpackConfig, {devtool: 'eval'})), {
+  new WebpackDevServer(webpack(merge(webpackConfig, {devtool: 'eval'})), {
     contentBase: dest,
     historyApiFallback: true
   }).listen(3334, "localhost", function (err) {
