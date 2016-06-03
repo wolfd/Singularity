@@ -1,13 +1,17 @@
 import React from 'react';
 
-class RequestsPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.displayName = 'RequestsPage';
-    }
-    render() {
-        return <div>RequestsPage</div>;
-    }
-}
+import SidebarFilter from '../common/SidebarFilter';
+import SearchBar from '../common/SearchBar';
+import TabBar from '../common/TabBar';
+
+const RequestsPage = () => (
+  <div>
+    <SidebarFilter />
+    <div>
+      <SearchBar />
+      <TabBar />
+    </div>
+  </div>
+);
 
 export default RequestsPage;

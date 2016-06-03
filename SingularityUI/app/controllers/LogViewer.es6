@@ -4,10 +4,8 @@ import LogLines from '../collections/LogLines';
 
 import LogView from '../views/logView';
 
-import { createStore, compose, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
-import rootReducer from '../reducers';
+import configureStore from '../store/configureStore';
+
 import LogActions from '../actions/log';
 import ActiveTasks from '../actions/activeTasks';
 
@@ -18,6 +16,9 @@ class LogViewerController extends Controller {
     this.initialOffset = initialOffset;
     this.title(`Tail of ${_.last(this.path.split('/'))}`);
 
+    this.store = configureStore();
+
+    // Set up initial state for this
     const initialState = {
       viewMode,
       colors: ['Default', 'Light', 'Dark'],
@@ -27,13 +28,7 @@ class LogViewerController extends Controller {
       }
     };
 
-    let middlewares = [thunk];
-
-    if (window.localStorage.enableReduxLogging) {
-      middlewares.push(logger());
-    }
-
-    this.store = createStore(rootReducer, initialState, compose(applyMiddleware.apply(this, middlewares)));
+    this.store.dispatch(LogActions.setupInitialLoggingState(initialState));
 
     let initPromise;
     if (taskIds.length > 0) {

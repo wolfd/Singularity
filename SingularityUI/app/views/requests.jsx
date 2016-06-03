@@ -7,10 +7,12 @@ import { Provider } from 'react-redux';
 class RequestsView extends View {
     constructor(...args) {
       super(...args);
-      this.handleViewChange = this.handleViewChange.bind(this);
     }
 
     initialize(store) {
+      // backbone calls this before the constructor can get to do its thing
+      this.handleViewChange = this.handleViewChange.bind(this);
+      this.render = this.render.bind(this);
       window.addEventListener('viewChange', this.handleViewChange);
       this.component = <Provider store={store}><RequestsPage /></Provider>;
     }
@@ -23,7 +25,7 @@ class RequestsView extends View {
     }
 
     render() {
-      $(this.el).addClass('tail-root');
+      $(this.el).addClass('requests-root');
       return ReactDOM.render(this.component, this.el);
     }
   }
