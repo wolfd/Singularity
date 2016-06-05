@@ -674,6 +674,10 @@ public class SingularityScheduler {
         try {
           final CronExpression cronExpression = new CronExpression(request.getQuartzScheduleSafe());
 
+          if (request.getScheduleTimeZone().isPresent()) {
+            cronExpression.setTimeZone(request.getScheduleTimeZone().get());
+          }
+
           final Date scheduleFrom = new Date(now);
           final Date nextRunAtDate = cronExpression.getNextValidTimeAfter(scheduleFrom);
 

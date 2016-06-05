@@ -71,7 +71,7 @@ public class RequestHelper {
       return true;
     }
     if (newRequest.isScheduled() && oldRequest.isScheduled()) {
-      if (!newRequest.getQuartzScheduleSafe().equals(oldRequest.getQuartzScheduleSafe())) {
+      if (!newRequest.getQuartzScheduleSafe().equals(oldRequest.getQuartzScheduleSafe()) || !newRequest.getScheduleTimeZone().equals(oldRequest.getScheduleTimeZone())) {
         return true;
       }
     }

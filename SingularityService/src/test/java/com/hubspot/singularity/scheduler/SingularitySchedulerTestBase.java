@@ -42,6 +42,7 @@ import com.hubspot.singularity.DeployState;
 import com.hubspot.singularity.LoadBalancerRequestType;
 import com.hubspot.singularity.LoadBalancerRequestType.LoadBalancerRequestId;
 import com.hubspot.singularity.RequestType;
+import com.hubspot.singularity.ScheduleType;
 import com.hubspot.singularity.SingularityCuratorTestBase;
 import com.hubspot.singularity.SingularityDeploy;
 import com.hubspot.singularity.SingularityDeployBuilder;
@@ -403,6 +404,7 @@ public class SingularitySchedulerTestBase extends SingularityCuratorTestBase {
 
     if (requestType == RequestType.SCHEDULED) {
       bldr.setQuartzSchedule(Optional.of(schedule));
+      bldr.setScheduleType(Optional.of(ScheduleType.QUARTZ));
     }
 
     request = bldr.build();

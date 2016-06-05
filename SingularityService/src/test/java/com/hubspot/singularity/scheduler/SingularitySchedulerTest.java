@@ -1,11 +1,14 @@
 package com.hubspot.singularity.scheduler;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.mesos.Protos.Offer;
@@ -17,6 +20,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+import org.quartz.CronExpression;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
@@ -37,6 +41,7 @@ import com.hubspot.singularity.MachineState;
 import com.hubspot.singularity.RequestCleanupType;
 import com.hubspot.singularity.RequestState;
 import com.hubspot.singularity.RequestType;
+import com.hubspot.singularity.ScheduleType;
 import com.hubspot.singularity.SingularityDeploy;
 import com.hubspot.singularity.SingularityDeployBuilder;
 import com.hubspot.singularity.SingularityDeployProgress;
@@ -2052,6 +2057,36 @@ public class SingularitySchedulerTest extends SingularitySchedulerTestBase {
   }
 
   @Test
+  public void testScheduleTimeZone() throws ParseException {
+    schedule = "0 0 5 * * ?"; // run at 5am
+    final CronExpression defaultCron = new CronExpression(schedule);
+    final CronExpression estCron = new CronExpression(schedule);
+    estCron.setTimeZone(TimeZone.getTimeZone("EST"));
+
+    SingularityRequestBuilder bldr = new SingularityRequestBuilder(requestId, RequestType.SCHEDULED)
+        .setSchedule(Optional.of(schedule))
+        .setScheduleType(Optional.of(ScheduleType.QUARTZ));
+    requestResource.postRequest(bldr.build());
+
+    deploy("test");
+
+    deployChecker.checkDeploys();
+
+    scheduler.drainPendingQueue(stateCacheProvider.get());
+
+    // assert that there is one pending task scheduled to run at 5am UTC
+    Assert.assertEquals(1, taskManager.getPendingTasks().size());
+    Assert.assertEquals(defaultCron.getNextValidTimeAfter(new Date()).getTime(), taskManager.getPendingTasks().get(0).getPendingTaskId().getNextRunAt());
+
+    requestResource.postRequest(bldr.setScheduleTimeZone(Optional.of(TimeZone.getTimeZone("EST"))).build());
+
+    // assert that there is one pending task scheduled to run at 5am EST
+    Assert.assertEquals(1, taskManager.getPendingTasks().size());
+    Assert.assertEquals(estCron.getNextValidTimeAfter(new Date()).getTime(), taskManager.getPendingTasks().get(0).getPendingTaskId().getNextRunAt());
+
+  }
+
+  @Test
   public void testScheduledNotification() {
     schedule = "0 0 * * * ?"; // run every hour
     initScheduledRequest();
@@ -2179,7 +2214,7 @@ public class SingularitySchedulerTest extends SingularitySchedulerTestBase {
     initRequest();
     initFirstDeploy();
 
-    saveAndSchedule(request.toBuilder().setInstances(Optional.of(2)));
+    saveAndSchedule(request.toBuilder());
 
     scheduler.drainPendingQueue(stateCacheProvider.get());
 
