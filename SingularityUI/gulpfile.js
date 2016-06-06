@@ -114,7 +114,7 @@ gulp.task('styles', function () {
     }));
 
   var sassStyles = gulp.src('app/styles/scss/**/*.scss')
-    .pipe(sass().on('error', sass.logError));
+    .pipe(sass({errLogToConsole: true}));
 
   return streamqueue({ objectMode: true }, stylusStyles, sassStyles)
     .pipe(concat('app.css'))
