@@ -4,14 +4,14 @@ import taskGroups from './taskGroups';
 import activeRequest from './activeRequest';
 import tasks from './tasks';
 
-let path = function(state='', action) {
+let path = function(state = '', action) {
   if (action.type === 'LOG_INIT') {
     return action.path;
   }
   return state;
 };
 
-let activeColor = function(state='default', action) {
+let activeColor = function(state = 'default', action) {
   if (action.type === 'LOG_INIT') {
     return window.localStorage.logColor || 'default';
   } else if (action.type === 'LOG_SELECT_COLOR') {
@@ -21,27 +21,27 @@ let activeColor = function(state='default', action) {
   return state;
 };
 
-let colors = (state=[]) => state;
+let colors = (state = []) => state;
 
-let viewMode = function(state='custom', action) {
+let viewMode = function(state = 'custom', action) {
   if (action.type === 'LOG_SWITCH_VIEW_MODE') {
     return action.viewMode;
   }
   return state;
 };
 
-let search = function(state='', action) {
+let search = function(state = '', action) {
   if (action.type === 'LOG_INIT') {
     return action.search;
   }
   return state;
 };
 
-let logRequestLength = (state=30000, action) => state;
+let logRequestLength = (state = 30000, action) => state;
 
-let maxLines = (state=100000, action) => state;
+let maxLines = (state = 100000, action) => state;
 
-let showDebugInfo = function(state=false, action) {
+let showDebugInfo = function(state = false, action) {
   if (action.type === 'LOG_INIT') {
     return Boolean(window.localStorage.showDebugInfo) || false;
   }
