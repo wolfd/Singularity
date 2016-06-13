@@ -3,5 +3,5 @@ buildpack:
   host: git.hubteam.com
   organization: HubSpotProtected
   repository: Blazar-Buildpack-Singularity
-  branch: ui
+  branch: hs_staging
 
