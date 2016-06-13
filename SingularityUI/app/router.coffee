@@ -44,7 +44,7 @@ class Router extends Backbone.Router
         'request/:requestId(/)': 'requestDetail'
         'request/:requestId/deploy/:deployId(/)': 'deployDetail'
         'request/:requestId/tail/*path': 'aggregateTail'
-        'request/:requestId/taskSearch': 'taskSearch'
+        'request/:requestId/task-search': 'taskSearch'
 
         'request/:requestId/deploy(/)': 'newDeploy'
 
@@ -57,7 +57,7 @@ class Router extends Backbone.Router
         'task/:taskId/files(/)*path': 'taskFileBrowser'
         'task/:taskId/tail/*path': 'tail'
 
-        'taskSearch': 'taskSearch'
+        'task-search': 'taskSearch'
 
         'racks(/)': 'racks'
         'racks/:state(/)': 'racks'
