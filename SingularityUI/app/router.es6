@@ -1,6 +1,5 @@
 let DashboardController;
 let DeployDetailController;
-let NewDeployController;
 let NotFoundController;
 let RequestDetailController;
 let RequestFormEditController;
@@ -21,7 +20,7 @@ RequestFormNewController = require('controllers/RequestFormNew');
 
 RequestFormEditController = require('controllers/RequestFormEdit');
 
-NewDeployController = require('controllers/NewDeploy');
+import NewDeployController from 'controllers/NewDeploy';
 
 RequestDetailController = require('controllers/RequestDetail');
 
@@ -107,7 +106,8 @@ class Router extends Backbone.Router {
 
   newDeploy(requestId) {
     return this.app.bootstrapController(new NewDeployController({
-      requestId
+      store: this.app.store,
+      requestId: requestId
     }));
   }
 
