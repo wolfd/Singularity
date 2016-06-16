@@ -4,4 +4,3 @@ buildpack:
   organization: HubSpotProtected
   repository: Blazar-Buildpack-Singularity
   branch: hs_staging
-
