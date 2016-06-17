@@ -1,3 +1,5 @@
 enabled: true
 env:
+  DEPLOYED_BRANCH: hs_staging
+  SINGULARITY_NAME_OVERRIDE: STAGING
   MAVEN_ARGS: -Dsingularity.jar.name.format=\${project.artifactId} -Dgpg.skip=true
