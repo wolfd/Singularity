@@ -1,49 +1,22 @@
-let NewDeployController;
-let NotFoundController;
-let RequestDetailController;
-let RequestFormEditController;
-let RequestFormNewController;
-let RequestsTableController;
-let TaskDetailController;
-let TaskSearchController;
-let TasksTableController;
-let Utils;
+import DashboardController from 'controllers/Dashboard'
+import StatusController from 'controllers/Status'
+import RequestFormNewController from 'controllers/RequestFormNew'
+import RequestFormEditController from 'controllers/RequestFormEdit'
+import NewDeployController from 'controllers/NewDeploy'
+import RequestDetailController from 'controllers/RequestDetail'
+import RequestsController from 'controllers/Requests'
+import TasksTableController from 'controllers/TasksTable'
+import TaskDetailController from 'controllers/TaskDetail'
+import RacksController from 'controllers/Racks'
+import SlavesController from 'controllers/Slaves'
+import NotFoundController from 'controllers/NotFound'
+import DeployDetailController from 'controllers/DeployDetail'
+import LogViewerController from 'controllers/LogViewer'
+import TaskSearchController from 'controllers/TaskSearch'
+import WebhooksController from 'controllers/Webhooks'
+import Utils from './utils'
 
 const hasProp = {}.hasOwnProperty;
-
-import DashboardController from 'controllers/Dashboard';
-
-import StatusController from 'controllers/Status';
-
-RequestFormNewController = require('controllers/RequestFormNew');
-
-RequestFormEditController = require('controllers/RequestFormEdit');
-
-NewDeployController = require('controllers/NewDeploy');
-
-RequestDetailController = require('controllers/RequestDetail');
-
-RequestsTableController = require('controllers/RequestsTable');
-
-TasksTableController = require('controllers/TasksTable');
-
-TaskDetailController = require('controllers/TaskDetail');
-
-import RacksController from 'controllers/Racks';
-
-import SlavesController from 'controllers/Slaves';
-
-NotFoundController = require('controllers/NotFound');
-
-import DeployDetailController from 'controllers/DeployDetail';
-
-import LogViewerController from 'controllers/LogViewer';
-
-TaskSearchController = require('controllers/TaskSearch');
-
-import WebhooksController from 'controllers/Webhooks';
-
-Utils = require('./utils').default;
 
 class Router extends Backbone.Router {
   constructor(app) {
@@ -86,10 +59,8 @@ class Router extends Backbone.Router {
     if (searchFilter == null) {
       searchFilter = '';
     }
-    return this.app.bootstrapController(new RequestsTableController({
-      state,
-      subFilter,
-      searchFilter
+    return this.app.bootstrapController(new RequestsController({
+      store: this.app.store
     }));
   }
 
@@ -137,7 +108,7 @@ class Router extends Backbone.Router {
 
   taskFileBrowser(taskId, filePath) {
     if (filePath == null) {
-      filePath = "";
+      filePath = '';
     }
     return this.app.bootstrapController(new TaskDetailController({
       taskId,
