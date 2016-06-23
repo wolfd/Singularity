@@ -67,7 +67,7 @@ class RequestsPage extends Component {
             />
           </TabBar>
           <FilterSearchBar />
-          <FilteredRequestsTable maxVisible={10} />
+          <FilteredRequestsTable />
         </MainContent>
       </div>
     );
