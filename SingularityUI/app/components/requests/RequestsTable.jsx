@@ -23,7 +23,7 @@ class RequestsTable extends Component {
         data={this.props.requests}
         keyGetter={(r) => r.request.id}
         asyncSort={true}
-        paginated={true}
+        paginated={false}
       >
         {RequestId}
         {Type}
