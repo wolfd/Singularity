@@ -1,14 +1,32 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { SetLoading } from './actions/ui/rootComponent';
+
+function mapStateToProps(state) {
+  return {
+    loading: state.ui.rootComponent.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setLoading: (loading) => dispatch(SetLoading(loading))
+  };
+}
 
 // eslint-disable-next-line no-unused-vars react/no-multi-comp
-const rootComponent = (Wrapped, title, refresh = _.noop) => class extends React.Component {
+const rootComponent = (Wrapped, title, refresh = _.noop) => connect(mapStateToProps, mapDispatchToProps)(class extends React.Component {
+
+  static propTypes = {
+    setLoading: React.PropTypes.func,
+    loading: React.PropTypes.bool
+  }
 
   constructor(props) {
     super(props);
     _.bindAll(this, 'handleBlur', 'handleFocus');
-    this.state = {
-      loading: refresh !== _.noop
-    };
+    props.setLoading(refresh !== _.noop);
   }
 
   componentDidMount() {
@@ -17,9 +35,7 @@ const rootComponent = (Wrapped, title, refresh = _.noop) => class extends React.
     const promise = refresh(this.props);
     if (promise) {
       promise.then(() => {
-        this.setState({
-          loading: false
-        });
+        this.props.setLoading(false);
       });
     }
 
@@ -53,8 +69,8 @@ const rootComponent = (Wrapped, title, refresh = _.noop) => class extends React.
 
 
   render() {
-    const loader = this.state.loading && <div className="page-loader fixed" />;
-    const page = !this.state.loading && <Wrapped {...this.props} />;
+    const loader = this.props.loading && <div className="page-loader fixed" />;
+    const page = !this.props.loading && <Wrapped {...this.props} />;
     return (
       <div>
         {loader}
@@ -62,6 +78,6 @@ const rootComponent = (Wrapped, title, refresh = _.noop) => class extends React.
       </div>
     );
   }
-};
+});
 
 export default rootComponent;
