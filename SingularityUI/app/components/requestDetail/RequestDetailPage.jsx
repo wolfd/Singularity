@@ -8,13 +8,14 @@ import {
   FetchActiveTasksForRequest
 } from '../../actions/api/history';
 import {
-  FetchPendingTaskIds,
+  FetchScheduledTasksForRequest,
   FetchTaskCleanups
 } from '../../actions/api/tasks';
 
 import RequestHeader from './RequestHeader';
 import RequestExpiringActions from './RequestExpiringActions';
 import ActiveTasksTable from './ActiveTasksTable';
+import PendingTasksTable from './PendingTasksTable';
 import TaskHistoryTable from './TaskHistoryTable';
 import DeployHistoryTable from './DeployHistoryTable';
 import RequestHistoryTable from './RequestHistoryTable';
@@ -38,6 +39,7 @@ class RequestDetailPage extends Component {
         <RequestExpiringActions requestId={requestId} />
         <InstanceOverview requestId={requestId} />
         <ActiveTasksTable requestId={requestId} />
+        <PendingTasksTable requestId={requestId} />
         <TaskHistoryTable requestId={requestId} />
         <DeployHistoryTable requestId={requestId} />
         <RequestHistoryTable requestId={requestId} />
@@ -56,8 +58,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const refreshActions = [
     FetchRequest.trigger(ownProps.requestId),
     FetchActiveTasksForRequest.trigger(ownProps.requestId),
-    FetchTaskCleanups.trigger(),
-    FetchPendingTaskIds.trigger()
+    FetchScheduledTasksForRequest.trigger(ownProps.requestId),
+    FetchTaskCleanups.trigger()
   ];
   return {
     refresh: () => dispatch(RefreshActions.BeginAutoRefresh(

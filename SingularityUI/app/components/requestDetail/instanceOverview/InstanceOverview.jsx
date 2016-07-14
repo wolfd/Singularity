@@ -25,11 +25,11 @@ const InstanceOverview = ({requestId, requestParentAPI, pendingTasksAPI, activeT
   }
 
   if (activeDeploy) {
-    deploys.push(<Deploy key={activeDeploy.id} requestId={requestId} deployId={activeDeploy.id} />);
+    deploys.push(<Deploy key={activeDeploy.id} requestId={requestId} deployId={activeDeploy.id} active={true} />);
   }
 
   if (pendingDeploy) {
-    deploys.push(<Deploy key={pendingDeploy.id} requestId={requestId} deployId={pendingDeploy.id} />);
+    deploys.push(<Deploy key={pendingDeploy.id} requestId={requestId} deployId={pendingDeploy.id} pending={true} />);
   }
 
   return (
@@ -53,7 +53,7 @@ const mapStateToProps = (state, ownProps) => ({
     state.api.request,
     [ownProps.requestId]
   ),
-  pendingTasksAPI: state.api.pendingTaskIds,
+  pendingTasksAPI: state.api.scheduledTasksForRequest,
   activeTasks: Utils.maybe(
     state.api.activeTasksForRequest,
     [ownProps.requestId, 'data'],

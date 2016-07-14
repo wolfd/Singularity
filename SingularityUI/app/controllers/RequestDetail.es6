@@ -8,7 +8,7 @@ import {
   FetchRequestHistory
 } from '../actions/api/history';
 import {
-  FetchPendingTaskIds,
+  FetchScheduledTasksForRequest,
   FetchTaskCleanups
 } from '../actions/api/tasks';
 
@@ -29,8 +29,8 @@ class RequestDetailController extends Controller {
   refresh() {
     this.store.dispatch(FetchRequest.trigger(this.requestId));
     this.store.dispatch(FetchActiveTasksForRequest.trigger(this.requestId));
+    this.store.dispatch(FetchScheduledTasksForRequest.trigger(this.requestId));
     this.store.dispatch(FetchTaskCleanups.trigger());
-    this.store.dispatch(FetchPendingTaskIds.trigger());
     this.store.dispatch(FetchTaskHistoryForRequest.trigger(this.requestId, 5, 1));
     this.store.dispatch(FetchDeploysForRequest.trigger(this.requestId, 5, 1));
     this.store.dispatch(FetchRequestHistory.trigger(this.requestId, 5, 1));

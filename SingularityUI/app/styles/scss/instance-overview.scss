@@ -4,6 +4,12 @@ $instance-width: $instance-diameter - $instance-border;
 $instance-horizontal-margin: 0.1em;
 $instance-vertical-margin: 0.1em;
 
+@mixin instance-lb($color) {
+  &.lb {
+    border: $instance-border solid darken($color, 5);
+  }
+}
+
 .instance-overview {
   margin: 1em;
 
@@ -11,9 +17,19 @@ $instance-vertical-margin: 0.1em;
     padding: 0.5em;
     text-align: right;
     vertical-align: middle;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #425b76;
+    font-family: Consolas, monaco, monospace;
     font-size: 16pt;
+    font-weight: 200;
     white-space: nowrap;
+
+    &.deploy-pending {
+      font-style: italic;
+    }
+
+    &.deploy-active {
+      font-weight: 500;
+    }
   }
 
   .instances {
@@ -71,9 +87,7 @@ $instance-vertical-margin: 0.1em;
         height: 0%;
       }
       
-      &:before {
-        border-left: 2px solid #CBD6E2;
-      }
+      @include instance-lb(#00BDA5);
     }
     
     &.instance-CLEANING {
@@ -83,6 +97,8 @@ $instance-vertical-margin: 0.1em;
       .fader {
         height: 0%;
       }
+
+      @include instance-lb(#F5C26B);
     }
   }
 
