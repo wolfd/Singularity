@@ -53,6 +53,7 @@ import {
 
 import {
   FetchTasksInState,
+  FetchPendingTaskIds,
   FetchTask, // currently FetchTaskHistory is used for `task` in the store
   KillTask,
   FetchTaskCleanups,
@@ -88,6 +89,7 @@ const taskShellCommandResponse = buildApiActionReducer(RunCommandOnTask);
 const task = buildKeyedApiActionReducer(FetchTaskHistory);
 const taskHistory = buildApiActionReducer(FetchTaskSearchParams, []);
 const tasks = buildApiActionReducer(FetchTasksInState, []);
+const pendingTaskIds = buildApiActionReducer(FetchPendingTaskIds, []);
 
 export default combineReducers({
   user,
@@ -115,5 +117,6 @@ export default combineReducers({
   taskResourceUsage,
   taskS3Logs,
   taskShellCommandResponse,
-  taskHistory
+  taskHistory,
+  pendingTaskIds
 });

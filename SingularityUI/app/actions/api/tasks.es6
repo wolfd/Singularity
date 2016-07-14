@@ -25,6 +25,13 @@ export const FetchTasksInState = buildApiAction(
   }
 );
 
+export const FetchPendingTaskIds = buildApiAction(
+  'FETCH_PENDING_TASK_IDS',
+  {
+    url: '/tasks/scheduled/ids'
+  }
+);
+
 export const FetchTask = buildApiAction(
   'FETCH_TASK',
   (taskId) => ({
